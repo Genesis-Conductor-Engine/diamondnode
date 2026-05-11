@@ -1,0 +1,10 @@
+{
+  "_comment": "Template — populated at runtime by the Worker. The identity_pubkey field is populated after running: node scripts/gen-identity.mjs && wrangler secret put DIAMOND_NODE_ED25519_PUB",
+  "node_id": "diamond-node",
+  "key_id": "dn-2026-05",
+  "identity_pubkey": "",
+  "version": "0.1.0",
+  "deploy_url": "https://dn.genesisconductor.io",
+  "repo": "https://github.com/Genesis-Conductor-Engine/diamond-node",
+  "audit_replay": "https://dn.genesisconductor.io/audit/replay"
+}

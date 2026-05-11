@@ -1,0 +1,22 @@
+{
+  "name": "@genesis-conductor/diamond-node",
+  "version": "0.1.0",
+  "description": "Genesis Conductor audit-node — QUBO simulation engine + Cloudflare Worker identity layer",
+  "license": "Apache-2.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:dry": "wrangler deploy --dry-run",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "gen-identity": "node scripts/gen-identity.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240524.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0",
+    "wrangler": "^3.60.0"
+  }
+}

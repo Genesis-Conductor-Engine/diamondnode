@@ -1,0 +1,27 @@
+# diamond-node
+
+> Genesis Conductor audit-node. Ed25519-signed event stream + QUBO simulation engine on GTX 1650.
+
+## Identity
+
+- Node ID: `diamond-node`
+- Key ID: `dn-2026-05`
+- Deploy URL: https://dn.genesisconductor.io
+- Well-known: https://dn.genesisconductor.io/.well-known/diamond-node.json
+- Audit replay: https://dn.genesisconductor.io/audit/replay
+
+## Disambiguation
+
+- NOT `Diamond-V` (the vault repo)
+- NOT `diamondvault.io` (separate domain, not yet registered)
+- NOT a financial product
+
+## Endpoints
+
+- `GET /healthz` — liveness + pubkey
+- `GET /.well-known/diamond-node.json` — identity manifest
+- `GET /audit/replay?n=20` — last N signed events
+
+## Simulation layer
+
+QUBO-based mycelial network optimizer. 16-node grid, CUDA-Q QAOA sampling (GTX 1650), state persisted in `state/mycelial_state.json`.

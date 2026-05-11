@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-05-11T06:10:34.305496+00:00",
+  "suite": "all",
+  "passed": 4,
+  "total": 5,
+  "success_rate": 0.8,
+  "results": [
+    {
+      "name": "gpu_telemetry",
+      "passed": true,
+      "duration_s": 0.025,
+      "value": 31.0,
+      "unit": "\u00b0C",
+      "threshold": 89.6,
+      "notes": "T_j=31.0\u00b0C  P=[N/A]W  mem=2754MiB"
+    },
+    {
+      "name": "bench_cudaq_probe",
+      "passed": false,
+      "duration_s": 0,
+      "notes": "[Errno 2] No such file or directory: \"import cudaq, json;cudaq.set_target('qpp-cpu');@cudaq.kernel\\ndef k():\\n  q=cudaq."
+    },
+    {
+      "name": "qubo_iteration",
+      "passed": true,
+      "duration_s": 1.378,
+      "notes": "\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m{\"iteration\": 2, \"timestamp\": \"2026-05-11T06:10:22.545425+00:00\", \"subspaces\": [{\"start\": 0, \"end\": 10, \"active\": 3, \"attempt\": 1}, {\"start\": 10, \"end\":"
+    },
+    {
+      "name": "state_persistence",
+      "passed": true,
+      "duration_s": 0.0,
+      "value": 3,
+      "unit": "iterations",
+      "notes": "iteration=3 active_edges=0"
+    },
+    {
+      "name": "llm_latency",
+      "passed": true,
+      "duration_s": 10.473,
+      "value": 10.473,
+      "unit": "s",
+      "threshold": 30.0,
+      "notes": "OK"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-05-11T06:11:49.332463+00:00",
+  "suite": "all",
+  "passed": 4,
+  "total": 5,
+  "success_rate": 0.8,
+  "results": [
+    {
+      "name": "gpu_telemetry",
+      "passed": true,
+      "duration_s": 0.025,
+      "value": 32.0,
+      "unit": "\u00b0C",
+      "threshold": 89.6,
+      "notes": "T_j=32.0\u00b0C  P=[N/A]W  mem=2756MiB"
+    },
+    {
+      "name": "cudaq_probe",
+      "passed": false,
+      "duration_s": 1.351,
+      "notes": "Traceback (most recent call last):\n  File \"/home/diamondnode/diamond-node/scripts/_cudaq_probe.py\", line 16, in <module>\n    for b in r.get_bitstrings():\n             ^^^^^^^^^^^^^^^^\nAttributeError: "
+    },
+    {
+      "name": "qubo_iteration",
+      "passed": true,
+      "duration_s": 1.376,
+      "notes": "\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m{\"iteration\": 4, \"timestamp\": \"2026-05-11T06:11:47.766028+00:00\", \"subspaces\": [{\"start\": 0, \"end\": 10, \"active\": 4, \"attempt\": 1}, {\"start\": 10, \"end\":"
+    },
+    {
+      "name": "state_persistence",
+      "passed": true,
+      "duration_s": 0.0,
+      "value": 5,
+      "unit": "iterations",
+      "notes": "iteration=5 active_edges=0"
+    },
+    {
+      "name": "llm_latency",
+      "passed": true,
+      "duration_s": 0.277,
+      "value": 0.277,
+      "unit": "s",
+      "threshold": 30.0,
+      "notes": "OK"
+    }
+  ]
+}

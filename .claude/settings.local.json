@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/home/diamondnode/venv312/bin/python scripts/mycelial_qubo.py --shots 512 --outer-rounds 3 --json)",
+      "Bash(/home/diamondnode/venv312/bin/python scripts/benchmark.py --suite gpu,cudaq,qubo --json)",
+      "Bash(python3 -c ' *)",
+      "Bash(/home/diamondnode/venv312/bin/python scripts/benchmark.py --suite all)",
+      "Bash(/home/diamondnode/venv312/bin/python scripts/llm_interpret.py)",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg)",
+      "Bash(sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg)",
+      "Bash(dpkg --print-architecture)",
+      "Bash(echo \"deb [arch=$\\(dpkg --print-architecture\\) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main\")",
+      "Bash(sudo tee /etc/apt/sources.list.d/github-cli.list)",
+      "Bash(sudo apt-get update -qq)",
+      "Bash(sudo apt-get install -y -qq gh)",
+      "Bash(curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /tmp/ghkey.gpg)",
+      "Bash(sudo mv /tmp/ghkey.gpg /usr/share/keyrings/githubcli-archive-keyring.gpg)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)"
+    ]
+  }
+}

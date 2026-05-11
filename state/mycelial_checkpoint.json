@@ -1,0 +1,1545 @@
+{
+  "iteration": 10,
+  "n_nodes": 16,
+  "active_edges": [],
+  "energy_history": [
+    32.67852168557346,
+    37.87320176721424,
+    36.31076466523268,
+    40.75924461991048,
+    37.310774708721766,
+    39.023075321893806,
+    40.14615096226512,
+    34.30277964481043,
+    37.88015953611374,
+    36.342441516333295
+  ],
+  "best_energy": 32.47335264665438,
+  "best_edges": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      10
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      1,
+      12
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      1,
+      15
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      2,
+      11
+    ],
+    [
+      2,
+      13
+    ],
+    [
+      2,
+      15
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      3,
+      8
+    ],
+    [
+      3,
+      13
+    ],
+    [
+      4,
+      10
+    ],
+    [
+      4,
+      12
+    ],
+    [
+      4,
+      15
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      5,
+      12
+    ],
+    [
+      5,
+      14
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      6,
+      9
+    ],
+    [
+      6,
+      13
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      7,
+      11
+    ],
+    [
+      7,
+      14
+    ],
+    [
+      8,
+      10
+    ],
+    [
+      8,
+      12
+    ],
+    [
+      8,
+      13
+    ],
+    [
+      8,
+      15
+    ],
+    [
+      9,
+      11
+    ],
+    [
+      9,
+      13
+    ],
+    [
+      10,
+      12
+    ],
+    [
+      10,
+      13
+    ],
+    [
+      11,
+      15
+    ],
+    [
+      12,
+      15
+    ],
+    [
+      13,
+      15
+    ]
+  ],
+  "resource_nodes": [
+    0,
+    15
+  ],
+  "node_positions": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1.0,
+      0.0
+    ],
+    [
+      2.0,
+      0.0
+    ],
+    [
+      3.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0
+    ],
+    [
+      2.0,
+      1.0
+    ],
+    [
+      3.0,
+      1.0
+    ],
+    [
+      0.0,
+      2.0
+    ],
+    [
+      1.0,
+      2.0
+    ],
+    [
+      2.0,
+      2.0
+    ],
+    [
+      3.0,
+      2.0
+    ],
+    [
+      0.0,
+      3.0
+    ],
+    [
+      1.0,
+      3.0
+    ],
+    [
+      2.0,
+      3.0
+    ],
+    [
+      3.0,
+      3.0
+    ]
+  ],
+  "last_updated": "2026-05-11T06:51:05.405121+00:00",
+  "run_log": [
+    {
+      "iteration": 0,
+      "timestamp": "2026-05-11T06:07:40.991474+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 6,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 32.67852168557346,
+      "best_energy": 32.67852168557346,
+      "active_edges": 52
+    },
+    {
+      "iteration": 1,
+      "timestamp": "2026-05-11T06:09:55.499233+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 6,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 37.87320176721424,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-05-11T06:10:22.545425+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 9,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 5,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 36.31076466523268,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 3,
+      "timestamp": "2026-05-11T06:10:51.899182+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 4,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 40.75924461991048,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-05-11T06:11:47.766028+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 4,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 37.310774708721766,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 5,
+      "timestamp": "2026-05-11T06:12:06.337812+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 1,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 6,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 39.023075321893806,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 6,
+      "timestamp": "2026-05-11T06:25:36.159131+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 0,
+          "end": 10,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 8,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 0,
+          "end": 10,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 1,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 4,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 2,
+      "energy": 40.14615096226512,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 7,
+      "timestamp": "2026-05-11T06:25:40.527560+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 8,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 0,
+          "end": 10,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 0,
+          "end": 10,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 9,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 2,
+      "energy": 34.30277964481043,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 8,
+      "timestamp": "2026-05-11T06:25:54.033212+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 1,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 5,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 0,
+      "energy": 37.88015953611374,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    },
+    {
+      "iteration": 9,
+      "timestamp": "2026-05-11T06:50:57.960157+00:00",
+      "subspaces": [
+        {
+          "start": 0,
+          "end": 10,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 8,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 8,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 0,
+          "end": 10,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 8,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 7,
+          "attempt": 1
+        },
+        {
+          "start": 0,
+          "end": 10,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "active": 3,
+          "attempt": 1
+        },
+        {
+          "start": 40,
+          "end": 50,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 50,
+          "end": 60,
+          "active": 4,
+          "attempt": 1
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 70,
+          "end": 80,
+          "active": 1,
+          "attempt": 1
+        },
+        {
+          "start": 80,
+          "end": 90,
+          "active": 6,
+          "attempt": 1
+        },
+        {
+          "start": 90,
+          "end": 100,
+          "active": 5,
+          "attempt": 1
+        },
+        {
+          "start": 100,
+          "end": 110,
+          "active": 2,
+          "attempt": 1
+        },
+        {
+          "start": 110,
+          "end": 120,
+          "active": 8,
+          "attempt": 1
+        }
+      ],
+      "outer_round": 2,
+      "energy": 36.342441516333295,
+      "best_energy": 32.67852168557346,
+      "active_edges": 0
+    }
+  ]
+}

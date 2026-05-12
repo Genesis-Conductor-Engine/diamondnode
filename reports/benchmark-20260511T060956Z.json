@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-05-11T06:09:56.803707+00:00",
+  "suite": "qubo",
+  "passed": 2,
+  "total": 2,
+  "success_rate": 1.0,
+  "results": [
+    {
+      "name": "qubo_iteration",
+      "passed": true,
+      "duration_s": 1.397,
+      "notes": "\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m{\"iteration\": 1, \"timestamp\": \"2026-05-11T06:09:55.499233+00:00\", \"subspaces\": [{\"start\": 0, \"end\": 10, \"active\": 7, \"attempt\": 1}, {\"start\": 10, \"end\":"
+    },
+    {
+      "name": "state_persistence",
+      "passed": true,
+      "duration_s": 0.0,
+      "value": 2,
+      "unit": "iterations",
+      "notes": "iteration=2 active_edges=0"
+    }
+  ]
+}

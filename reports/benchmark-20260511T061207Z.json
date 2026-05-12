@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-05-11T06:12:07.891157+00:00",
+  "suite": "all",
+  "passed": 5,
+  "total": 5,
+  "success_rate": 1.0,
+  "results": [
+    {
+      "name": "gpu_telemetry",
+      "passed": true,
+      "duration_s": 0.02,
+      "value": 34.0,
+      "unit": "\u00b0C",
+      "threshold": 89.6,
+      "notes": "T_j=34.0\u00b0C  P=[N/A]W  mem=2756MiB"
+    },
+    {
+      "name": "cudaq_probe",
+      "passed": true,
+      "duration_s": 1.322,
+      "value": 256,
+      "unit": "shots",
+      "threshold": 256,
+      "notes": "counts={'0': 121, '1': 135}"
+    },
+    {
+      "name": "qubo_iteration",
+      "passed": true,
+      "duration_s": 1.385,
+      "notes": "\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m\u001b[1m{\"iteration\": 5, \"timestamp\": \"2026-05-11T06:12:06.337812+00:00\", \"subspaces\": [{\"start\": 0, \"end\": 10, \"active\": 4, \"attempt\": 1}, {\"start\": 10, \"end\":"
+    },
+    {
+      "name": "state_persistence",
+      "passed": true,
+      "duration_s": 0.0,
+      "value": 6,
+      "unit": "iterations",
+      "notes": "iteration=6 active_edges=0"
+    },
+    {
+      "name": "llm_latency",
+      "passed": true,
+      "duration_s": 0.255,
+      "value": 0.255,
+      "unit": "s",
+      "threshold": 30.0,
+      "notes": "OK"
+    }
+  ]
+}

@@ -1,0 +1,374 @@
+# Optimization Profiles for Orthogonal Multi-Objective GPU Orchestration
+# Hardware: NVIDIA GTX 1650 (4 GB VRAM, 896 CUDA cores)
+# Models: CUDA-Q (124 MB), YOLO11s (1.2 GB), Qwen 1.5 (2-3 GB)
+
+# ==============================================================================
+# PROFILE 1: Scientific Workload (CUDA-Q Priority)
+# ==============================================================================
+# Optimization: Maximize accuracy and waveform equilibrium
+# Use case: Quantum optimization, QAOA, mycelial QUBO solving
+# Trade-off: Lower throughput acceptable, prioritize convergence quality
+
+scientific:
+  name: "Scientific Computing Profile"
+  description: "CUDA-Q quantum optimization with maximum accuracy"
+
+  weights:
+    vram_efficiency: 0.15
+    compute_throughput: 0.25
+    model_accuracy: 0.45      # Highest priority
+    waveform_equilibrium: 0.15
+
+  constraints:
+    vram_max_mib: 3400        # 85% of 4 GB
+    temp_max_c: 80.0
+    hamiltonian_max: 8.5
+    latency_p95_max_ms: 2000  # Relaxed for accuracy
+
+  model_config:
+    cuda_q:
+      enabled: true
+      priority: 1               # Highest priority
+      vram_allocation_mib: 200
+      batch_size: 1
+      max_qubits: 16
+      qaoa_layers: 3
+      shots_per_iteration: 1024
+      convergence_threshold: 0.001
+      early_stopping: true
+      waveform_equilibrium:
+        enabled: true
+        purity_target: 0.95
+        effective_dim_target: 5
+        check_interval: 50
+
+    yolo11s:
+      enabled: false           # Disable to free VRAM
+      priority: 3
+      vram_allocation_mib: 0
+
+    qwen_1_5:
+      enabled: false           # Disable to free VRAM
+      priority: 3
+      vram_allocation_mib: 0
+
+  predicted_metrics:
+    cuda_q:
+      vram_used_mib: 180
+      throughput_ops_per_sec: 220.0  # iterations/sec
+      accuracy_score: 0.0008         # Energy gradient
+      latency_p50_ms: 450
+      latency_p95_ms: 680
+      purity: 0.96
+      effective_dimension: 4.2
+      energy_gradient: 0.0008
+
+  optimal_operating_conditions:
+    vram_range_mib: [150, 250]
+    temp_range_c: [35, 55]
+    hamiltonian_range: [0.5, 2.5]
+
+
+# ==============================================================================
+# PROFILE 2: Vision Workload (YOLO11 Priority)
+# ==============================================================================
+# Optimization: Maximize throughput (FPS)
+# Use case: Real-time object detection, video processing, surveillance
+# Trade-off: Lower precision acceptable, prioritize frame rate
+
+vision:
+  name: "Vision Processing Profile"
+  description: "YOLO11s real-time detection with maximum throughput"
+
+  weights:
+    vram_efficiency: 0.20
+    compute_throughput: 0.50  # Highest priority
+    model_accuracy: 0.20
+    waveform_equilibrium: 0.10
+
+  constraints:
+    vram_max_mib: 3400
+    temp_max_c: 75.0           # Stricter for sustained load
+    hamiltonian_max: 8.0
+    latency_p95_max_ms: 100    # Real-time requirement
+
+  model_config:
+    cuda_q:
+      enabled: false
+      priority: 3
+      vram_allocation_mib: 0
+
+    yolo11s:
+      enabled: true
+      priority: 1               # Highest priority
+      vram_allocation_mib: 1300
+      batch_size: 4             # Maximize throughput
+      input_size: 640
+      conf_threshold: 0.25
+      iou_threshold: 0.45
+      max_det: 100
+      half_precision: true      # FP16 for speed
+      cuda_stream: 1
+
+    qwen_1_5:
+      enabled: false
+      priority: 3
+      vram_allocation_mib: 0
+
+  predicted_metrics:
+    yolo11s:
+      vram_used_mib: 1250
+      throughput_ops_per_sec: 28.5   # FPS
+      accuracy_score: 0.72           # mAP
+      latency_p50_ms: 32
+      latency_p95_ms: 48
+      purity: null
+      effective_dimension: null
+      energy_gradient: null
+
+  optimal_operating_conditions:
+    vram_range_mib: [1200, 1400]
+    temp_range_c: [45, 65]
+    hamiltonian_range: [3.0, 5.5]
+
+
+# ==============================================================================
+# PROFILE 3: Conversational Workload (Qwen Priority)
+# ==============================================================================
+# Optimization: Balance memory efficiency and response quality
+# Use case: Chat applications, text generation, LLM inference
+# Trade-off: Moderate throughput, focus on coherence and VRAM management
+
+conversational:
+  name: "Conversational AI Profile"
+  description: "Qwen 1.5 LLM inference with optimized memory usage"
+
+  weights:
+    vram_efficiency: 0.30     # Highest priority (LLMs are memory-hungry)
+    compute_throughput: 0.25
+    model_accuracy: 0.30
+    waveform_equilibrium: 0.15
+
+  constraints:
+    vram_max_mib: 3200        # Leave room for context cache
+    temp_max_c: 78.0
+    hamiltonian_max: 8.2
+    latency_p95_max_ms: 500
+
+  model_config:
+    cuda_q:
+      enabled: false
+      priority: 3
+      vram_allocation_mib: 0
+
+    yolo11s:
+      enabled: false
+      priority: 3
+      vram_allocation_mib: 0
+
+    qwen_1_5:
+      enabled: true
+      priority: 1               # Highest priority
+      vram_allocation_mib: 2800
+      max_seq_length: 2048
+      batch_size: 1
+      temperature: 0.7
+      top_p: 0.9
+      top_k: 40
+      repetition_penalty: 1.1
+      quantization: "int4"      # Memory optimization
+      use_flash_attention: true
+      kv_cache_dtype: "fp16"
+
+  predicted_metrics:
+    qwen_1_5:
+      vram_used_mib: 2650
+      throughput_ops_per_sec: 18.5   # tokens/sec
+      accuracy_score: 4.2            # Perplexity (lower is better)
+      latency_p50_ms: 280
+      latency_p95_ms: 420
+      purity: null
+      effective_dimension: null
+      energy_gradient: null
+
+  optimal_operating_conditions:
+    vram_range_mib: [2500, 2900]
+    temp_range_c: [40, 60]
+    hamiltonian_range: [6.5, 8.0]
+
+
+# ==============================================================================
+# PROFILE 4: Balanced Multi-Model
+# ==============================================================================
+# Optimization: Equal weights across all dimensions
+# Use case: Mixed workloads, multi-tenant scenarios, exploration
+# Trade-off: No single priority, adaptive scheduling
+
+balanced:
+  name: "Balanced Multi-Model Profile"
+  description: "Dynamic model swapping with equal optimization priorities"
+
+  weights:
+    vram_efficiency: 0.25
+    compute_throughput: 0.25
+    model_accuracy: 0.25
+    waveform_equilibrium: 0.25
+
+  constraints:
+    vram_max_mib: 3400
+    temp_max_c: 80.0
+    hamiltonian_max: 8.5
+    latency_p95_max_ms: 1000
+
+  model_config:
+    # Dynamic scheduling: load models on demand
+    cuda_q:
+      enabled: true
+      priority: 1
+      vram_allocation_mib: 150
+      batch_size: 1
+      max_qubits: 16
+      qaoa_layers: 2
+      shots_per_iteration: 512
+      convergence_threshold: 0.005
+      early_stopping: true
+      swap_out_after_idle_sec: 60
+
+    yolo11s:
+      enabled: true
+      priority: 2
+      vram_allocation_mib: 1200
+      batch_size: 2
+      input_size: 640
+      half_precision: true
+      swap_out_after_idle_sec: 30
+
+    qwen_1_5:
+      enabled: true
+      priority: 3
+      vram_allocation_mib: 2000
+      max_seq_length: 1024
+      batch_size: 1
+      quantization: "int8"
+      swap_out_after_idle_sec: 120
+
+  scheduling_policy:
+    type: "priority_preemptive"
+    rules:
+      - "If CUDA-Q request arrives: preempt YOLO or Qwen if needed"
+      - "If VRAM > 3000 MiB: swap out lowest priority model"
+      - "If H_resource > 7.5: trigger warning, prepare for OFFLOAD"
+      - "If H_resource > 8.5: OFFLOAD to Notion, free Qwen context"
+
+  predicted_metrics:
+    cuda_q:
+      vram_used_mib: 140
+      throughput_ops_per_sec: 180.0
+      accuracy_score: 0.003
+      latency_p50_ms: 520
+      latency_p95_ms: 780
+      purity: 0.93
+      effective_dimension: 5.8
+      energy_gradient: 0.003
+
+    yolo11s:
+      vram_used_mib: 1180
+      throughput_ops_per_sec: 22.0
+      accuracy_score: 0.70
+      latency_p50_ms: 42
+      latency_p95_ms: 65
+
+    qwen_1_5:
+      vram_used_mib: 1950
+      throughput_ops_per_sec: 15.0
+      accuracy_score: 5.5
+      latency_p50_ms: 350
+      latency_p95_ms: 520
+
+  optimal_operating_conditions:
+    vram_range_mib: [1800, 3200]
+    temp_range_c: [40, 70]
+    hamiltonian_range: [4.5, 8.0]
+
+
+# ==============================================================================
+# PROFILE 5: Low-Power Idle
+# ==============================================================================
+# Optimization: Minimize power and thermal output
+# Use case: Background monitoring, standby mode, thermal recovery
+# Trade-off: All models unloaded, only monitoring active
+
+low_power:
+  name: "Low-Power Idle Profile"
+  description: "Minimal VRAM usage for thermal management and standby"
+
+  weights:
+    vram_efficiency: 0.40     # Minimize usage
+    compute_throughput: 0.10  # Not relevant
+    model_accuracy: 0.10      # Not relevant
+    waveform_equilibrium: 0.40
+
+  constraints:
+    vram_max_mib: 500         # Base GPU driver only
+    temp_max_c: 60.0          # Cool down target
+    hamiltonian_max: 1.0
+    latency_p95_max_ms: 10000 # Not critical
+
+  model_config:
+    cuda_q:
+      enabled: false
+      priority: 1
+      vram_allocation_mib: 0
+
+    yolo11s:
+      enabled: false
+      priority: 2
+      vram_allocation_mib: 0
+
+    qwen_1_5:
+      enabled: false
+      priority: 3
+      vram_allocation_mib: 0
+
+  predicted_metrics: {}
+
+  optimal_operating_conditions:
+    vram_range_mib: [100, 300]
+    temp_range_c: [29, 40]
+    hamiltonian_range: [0.1, 0.8]
+
+
+# ==============================================================================
+# Performance Tuning Guidelines
+# ==============================================================================
+# For each workload profile, consider these trade-offs:
+#
+# 1. VRAM vs Throughput:
+#    - Larger batch sizes increase throughput but consume more VRAM
+#    - FP16/INT8 quantization reduces VRAM by ~50% with minimal accuracy loss
+#
+# 2. Accuracy vs Speed:
+#    - CUDA-Q: More shots/iteration improves accuracy but reduces ops/sec
+#    - YOLO11: Lower conf_threshold increases recall but more false positives
+#    - Qwen: Longer context improves coherence but increases latency
+#
+# 3. Thermal Management:
+#    - Sustained loads (vision) need stricter temp limits
+#    - Burst loads (conversational) can tolerate higher peaks
+#    - Monitor H_resource: >7.0 is warning, >8.5 is critical
+#
+# 4. Model Swapping Strategy:
+#    - Preload frequently used models
+#    - Swap out based on idle time (see swap_out_after_idle_sec)
+#    - Priority preemption: CUDA-Q > YOLO > Qwen
+#
+# 5. Waveform Equilibrium (CUDA-Q):
+#    - Higher purity (>0.95) indicates stable convergence
+#    - Lower effective_dimension (<5) shows eigenspace concentration
+#    - Early stopping saves compute when equilibrium reached
+#
+# Recommended Operating Points (Pareto-optimal):
+# - Scientific: 180 MiB VRAM, 220 ops/sec, 0.96 purity
+# - Vision: 1250 MiB VRAM, 28.5 FPS, 0.72 mAP
+# - Conversational: 2650 MiB VRAM, 18.5 tok/sec, 4.2 perplexity
+# - Balanced: 3270 MiB total (dynamic), adaptive throughput

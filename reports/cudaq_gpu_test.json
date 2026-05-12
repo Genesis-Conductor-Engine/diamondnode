@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-05-12T02:30:42.872054+00:00",
+  "cuda_q_version": "CUDA-Q Version 0.14.2 (https://github.com/NVIDIA/cuda-quantum 91ab3092e76dab8887d1fdf0c99a2478ca90581c)",
+  "target": "nvidia",
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "vram_total_mib": 4096,
+  "peak_vram_mib": 124,
+  "peak_temp_c": 31.0,
+  "total_duration_s": 0.367,
+  "tests": [
+    {
+      "num_qubits": 10,
+      "shots": 512,
+      "duration_s": 0.186,
+      "total_shots": 512,
+      "unique_states": 298,
+      "vram_before_mib": 10,
+      "vram_after_mib": 124,
+      "vram_delta_mib": 114,
+      "temp_before_c": 30.0,
+      "temp_after_c": 31.0,
+      "target": "nvidia"
+    },
+    {
+      "num_qubits": 16,
+      "shots": 512,
+      "duration_s": 0.087,
+      "total_shots": 512,
+      "unique_states": 498,
+      "vram_before_mib": 124,
+      "vram_after_mib": 124,
+      "vram_delta_mib": 0,
+      "temp_before_c": 31.0,
+      "temp_after_c": 31.0,
+      "target": "nvidia"
+    },
+    {
+      "num_qubits": 20,
+      "shots": 256,
+      "duration_s": 0.094,
+      "total_shots": 256,
+      "unique_states": 256,
+      "vram_before_mib": 124,
+      "vram_after_mib": 124,
+      "vram_delta_mib": 0,
+      "temp_before_c": 31.0,
+      "temp_after_c": 31.0,
+      "target": "nvidia"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,12 +1,34 @@
 {
-  "name": "self-hosted-pages-mcp",
+  "name": "@genesis-conductor/diamond-node",
   "version": "0.1.0",
-  "scripts": {},
-  "dependencies": {
-    "nanoid": "^5.1.5"
+  "description": "Genesis Conductor audit-node — QUBO simulation engine + Cloudflare Worker identity layer",
+  "license": "Apache-2.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:dry": "wrangler deploy --dry-run",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "gen-identity": "node scripts/gen-identity.mjs"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "typescript": "^5"
+    "@cloudflare/workers-types": "^4.20240524.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0",
+    "wrangler": "^3.60.0"
+  },
+  "dependencies": {
+    "@appsignal/javascript": "^1.6.1",
+    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.75.0",
+    "@opentelemetry/exporter-metrics-otlp-proto": "^0.217.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.217.0",
+    "@opentelemetry/resources": "^2.7.1",
+    "@opentelemetry/sdk-metrics": "^2.7.1",
+    "@opentelemetry/sdk-node": "^0.217.0",
+    "@opentelemetry/sdk-trace-node": "^2.7.1",
+    "@opentelemetry/semantic-conventions": "^1.40.0"
   }
 }

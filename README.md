@@ -65,6 +65,28 @@ Require `/home/diamondnode/venv312/bin/python` (not system Python).
 /home/diamondnode/venv312/bin/python scripts/llm_interpret.py
 ```
 
+## Documentation Guide
+
+**New to Diamond Node?**
+1. Start here: README.md (you are here)
+2. Environment setup: [CLAUDE.md](./CLAUDE.md)
+3. Deployment: [docs/setup/deployment.md](./docs/setup/deployment.md)
+
+**Running simulations?**
+1. QUBO optimization: [CLAUDE.md](./CLAUDE.md) → Architecture section
+2. VRAM management: [docs/optimization/vram-strategy.md](./docs/optimization/vram-strategy.md)
+3. Benchmarking: [docs/optimization/benchmarks.md](./docs/optimization/benchmarks.md)
+
+**Preparing for automation?**
+1. Automation roadmap: [docs/automation/claw-handoff.md](./docs/automation/claw-handoff.md)
+2. Monitoring setup: [docs/setup/monitoring.md](./docs/setup/monitoring.md)
+3. System status: [CHANGELOG.md](./CHANGELOG.md)
+
+**Technical deep-dives?**
+1. Orthogonal optimization: [docs/optimization/orthogonal-system.md](./docs/optimization/orthogonal-system.md)
+2. Waveform equilibrium: [WAVEFORM_DELIVERABLES.md](./WAVEFORM_DELIVERABLES.md)
+3. Historical context: [docs/archive/](./docs/archive/)
+
 ## Disambiguation
 
 This is **not** `Diamond-V` (vault repo) and **not** `diamondvault.io` (separate domain). See `llms.txt`.

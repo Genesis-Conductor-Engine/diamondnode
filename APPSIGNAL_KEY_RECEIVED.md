@@ -1,16 +1,17 @@
 # AppSignal API Key - Received ✅
 
-**Date**: 2026-05-12 10:49 UTC  
-**Status**: ✅ Key Received, ⚠️ Awaiting Wrangler Authentication
+**Date**: 2026-05-12 10:49 UTC (Updated 10:52 UTC)  
+**Status**: ✅ Key Updated, ⚠️ Awaiting Wrangler Authentication
 
 ---
 
 ## ✅ **AppSignal API Key Configured**
 
 ```
-Key: 405f98ac-80ac-4e47-a743-a948f4115088
+Key: b9484e99-79b4-4341-ad99-1c264ad5cd93
 Format: Valid UUID format
 Status: ✅ Stored in ~/.env
+Previous: 405f98ac-80ac-4e47-a743-a948f4115088 (superseded)
 ```
 
 ### Security ✅
@@ -76,7 +77,7 @@ This script will:
 cd ~/diamond-node
 
 # 1. Configure secret
-echo "405f98ac-80ac-4e47-a743-a948f4115088" | npx wrangler secret put APPSIGNAL_KEY
+echo "b9484e99-79b4-4341-ad99-1c264ad5cd93" | npx wrangler secret put APPSIGNAL_KEY
 
 # 2. Deploy
 npm run deploy
@@ -219,7 +220,7 @@ trackMetric(appsignal, "openclaw.task_dispatch", 1, {
 
 ### Access Control
 ```
-AppSignal Key: 405f98ac-80ac-4e47-a743-a948f4115088
+AppSignal Key: b9484e99-79b4-4341-ad99-1c264ad5cd93
 Type: Push & Deploy key
 Permissions: Send metrics, errors, events
 Scope: diamond-node app only

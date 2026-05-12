@@ -9,7 +9,7 @@ echo "======================="
 echo ""
 
 # AppSignal API Key (provided)
-APPSIGNAL_KEY="405f98ac-80ac-4e47-a743-a948f4115088"
+APPSIGNAL_KEY="b9484e99-79b4-4341-ad99-1c264ad5cd93"
 
 echo "✅ AppSignal API Key: ${APPSIGNAL_KEY:0:8}...${APPSIGNAL_KEY: -8}"
 echo ""

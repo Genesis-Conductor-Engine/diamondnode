@@ -177,8 +177,11 @@ def run_iteration(state: MycelialState, *, shots: int = 512,
     """One full outer-loop iteration with inner CUDA-Q subspace sampling."""
     Q_full, edges = build_Q(state)
     n_edges = len(edges)
-    best_x = np.zeros(n_edges, dtype=int)
     total_energy = 0.0
+
+    # Warm-start best_x from saved best edges
+    best_edge_set = {(min(e), max(e)) for e in state.best_edges}
+    best_x = np.array([1 if (min(edges[i][0], edges[i][1]), max(edges[i][0], edges[i][1])) in best_edge_set else 0 for i in range(n_edges)], dtype=int)
 
     log_entry: dict[str, Any] = {
         "iteration": state.iteration,

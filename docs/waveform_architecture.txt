@@ -1,0 +1,145 @@
+```
+Waveform Equilibrium Integration Architecture
+==============================================
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                        CUDA-Q QAOA Execution                        │
+│                      (GTX 1650 GPU - 4GB VRAM)                      │
+└────────────────────┬────────────────────────────────────────────────┘
+                     │ State vectors
+                     │ |ψ⟩ = Σ c_i |i⟩
+                     ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│              Waveform Equilibrium Module (CPU)                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 1. Eigenspace Decomposition                                     │ │
+│ │    Q = V Λ V^T                                                  │ │
+│ │    → Eigenvectors {|φ_k⟩}, Eigenvalues {λ_k}                   │ │
+│ │    Complexity: O(m³), Time: 1-10ms for m=10-20                 │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 2. State Projection                                             │ │
+│ │    α_k = ⟨φ_k|ψ⟩                                               │ │
+│ │    P_k = |α_k|²  (population in eigenspace k)                  │ │
+│ │    Complexity: O(m²), Time: <1ms                               │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 3. Equilibrium Metrics                                          │ │
+│ │    ⟨H⟩ = Σ P_k λ_k           (expected energy)                 │ │
+│ │    S = Σ P_k²                (purity)                          │ │
+│ │    D_eff = |{k : P_k > θ}|   (effective dimension)            │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 4. Convergence Detection                                        │ │
+│ │    |∇E| < ε_E  ✓   (energy stabilized)                        │ │
+│ │    |∇S| < ε_S  ✓   (eigenspace localized)                     │ │
+│ │    D_eff ≤ 5   ✓   (state concentrated)                       │ │
+│ │    → Action: EARLY_STOP                                        │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 5. Resource Monitoring (nvidia-smi)                             │ │
+│ │    H_resource = VRAM_ratio×10 + 0.3×T_ratio                    │ │
+│ │    Current: 7 MiB, 29°C → H = 0.11                            │ │
+│ │    Threshold: H > 8.5 → Action: OFFLOAD                        │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+└────────────┬───────────────────────────────┬────────────────────────┘
+             │ CONTINUE                      │ OFFLOAD
+             ↓                               ↓
+┌──────────────────────────┐    ┌────────────────────────────────────┐
+│   Mycelial QUBO Solver   │    │   Diamond Gateway API              │
+│   (scripts/              │    │   /opt/diamond-gateway/gateway.py  │
+│    mycelial_qubo.py)     │    │   POST /v1/orchestrate             │
+│                          │    │   → Ising Hamiltonian check        │
+│ • 16-node network        │    │   → H > 8.5? action=OFFLOAD        │
+│ • Subspace sampling      │    └───────────┬────────────────────────┘
+│ • Double-loopback        │                │
+│ • State persistence      │                ↓
+└──────────────────────────┘    ┌────────────────────────────────────┐
+                                │   Notion Bridge Worker             │
+                                │   ~/genesis/notion-bridge/         │
+                                │   Cloudflare Worker                │
+                                │                                    │
+                                │ • Database: soul-capsule           │
+                                │ • Properties: Session ID,          │
+                                │   VRAM, Context blob               │
+                                │ • Purpose: Persistent memory       │
+                                └────────────────────────────────────┘
+
+Performance Characteristics:
+============================
+
+CPU (Eigenspace Analysis)           GPU (QAOA Execution)
+┌─────────────────────────┐        ┌─────────────────────────┐
+│ • Eigendecomp: 1-10 ms  │        │ • 512 shots: ~200 ms    │
+│ • Projection: <1 ms     │        │ • Peak VRAM: 124 MiB    │
+│ • Total: <5% overhead   │        │ • Temp: 29-31°C         │
+│ • Memory: <100 KB       │        │ • Headroom: 26.4×       │
+└─────────────────────────┘        └─────────────────────────┘
+
+Convergence Flow:
+=================
+
+Iteration 0: ⟨H⟩=-1.85, S=0.56, D=2 → CONTINUE
+Iteration 1: ⟨H⟩=-1.92, S=0.63, D=2 → CONTINUE  (energy improved)
+Iteration 2: ⟨H⟩=-1.98, S=0.71, D=2 → CONTINUE  (localizing)
+...
+Iteration 8: ⟨H⟩=-2.11, S=0.99, D=1 → CONTINUE  (near convergence)
+Iteration 9: ⟨H⟩=-2.11, S=0.997, D=1 → EARLY_STOP ✓
+             |∇E|=3.7e-3 < 1e-3 ✗ → continue one more
+Iteration 10: ⟨H⟩=-2.115, S=0.999, D=1 → EARLY_STOP ✓
+              |∇E|=5e-4 < 1e-3 ✓
+              |∇S|=2e-4 < 1e-4 ✗ → almost there
+Iteration 11: ⟨H⟩=-2.115, S=1.0, D=1 → EARLY_STOP ✓✓✓
+              ALL CRITERIA MET → STOP
+
+File Structure:
+===============
+
+diamond-node/
+├── scripts/
+│   ├── waveform_equilibrium.py       [676 lines] Core module
+│   └── mycelial_qubo.py              [274 lines] QUBO solver
+├── test/
+│   └── waveform_equilibrium_test.py  [335 lines] Validation (6 tests ✅)
+├── docs/
+│   ├── waveform_equilibrium_theory.md      [252 lines] Math derivations
+│   ├── waveform_integration_guide.md       [486 lines] Integration steps
+│   └── waveform_quickref.md                [258 lines] Quick reference
+├── WAVEFORM_DELIVERABLES.md          [174 lines] This summary
+└── state/                            Persistent state JSON
+
+Integration Timeline:
+=====================
+
+Phase 1: Development & Validation [COMPLETE ✅]
+─────────────────────────────────────────────
+Week 1: Mathematical framework design
+Week 1: Module implementation (676 lines)
+Week 1: Test suite creation (6 tests)
+Week 1: Documentation (3 docs, 996 lines)
+Week 1: Validation (all tests pass)
+
+Phase 2: Integration [NEXT]
+────────────────────────────
+Day 1: Add imports to mycelial_qubo.py
+Day 1: Implement inner loop analysis
+Day 1: Implement outer loop tracking
+Day 1: Test on 16-node network
+Day 2: Measure convergence improvements
+Day 2: Profile VRAM scaling
+
+Phase 3: Production Deployment
+───────────────────────────────
+Week 2: Connect to gateway OFFLOAD
+Week 2: Monitor convergence traces
+Week 3: Tune epsilon thresholds
+Week 3: Measure unknown bounds
+
+Phase 4: Optimization
+─────────────────────
+Month 2: GPU-accelerated eigendecomp
+Month 2: Batch vectorization
+Month 3: Adaptive subspace sizing
+
+Status: Ready for Phase 2 Integration ✅
+```

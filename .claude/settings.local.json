@@ -19,7 +19,13 @@
       "Bash(sudo mv /tmp/ghkey.gpg /usr/share/keyrings/githubcli-archive-keyring.gpg)",
       "Bash(git init *)",
       "Bash(git config *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git branch *)",
+      "Bash(git commit -m ' *)",
+      "Bash(export PATH=\"$PATH:/home/diamondnode/.local/bin\")",
+      "Bash(npm list *)",
+      "Bash(/home/diamondnode/.local/bin/vibe --help)",
+      "Bash(/home/diamondnode/.local/bin/vibe *)"
     ]
   }
 }

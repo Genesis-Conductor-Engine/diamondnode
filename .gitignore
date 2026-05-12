@@ -5,3 +5,21 @@ dist/
 .env*
 !.env.example
 *.local
+
+# State files (generated at runtime)
+state/mycelial_state.json
+state/mycelial_checkpoint.json
+.claude/scheduled_tasks.lock
+
+# Logs (append-only, generated)
+logs/llm-interpretations.jsonl
+logs/*.log
+
+# Benchmark results (generated)
+benchmark_results/*.json
+reports/benchmark-*.json
+reports/health-*.json
+
+# Node modules
+node_modules/
+package-lock.json

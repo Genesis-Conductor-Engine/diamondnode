@@ -3,6 +3,7 @@ export interface Env {
   DIAMOND_NODE_ED25519_PRIV: string; // base64-encoded PKCS#8 private key
   DIAMOND_NODE_ED25519_PUB: string;  // base64-encoded SPKI public key
   DIAMOND_VAULT_AUDIT_URL: string;   // upstream audit endpoint (optional)
+  APPSIGNAL_KEY?: string;            // AppSignal API key (optional, for monitoring)
 
   // Vars — set in wrangler.toml [vars]
   NODE_VERSION: string;

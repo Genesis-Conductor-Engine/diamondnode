@@ -1,0 +1,38 @@
+================================================================================
+ORTHOGONAL OPTIMIZATION REPORT
+================================================================================
+Workload Type: conversational
+Total Operating Points Evaluated: 9
+Pareto-Optimal Configurations: 2
+
+Optimization Weights:
+  VRAM Efficiency:       0.300
+  Compute Throughput:    0.250
+  Model Accuracy:        0.300
+  Waveform Equilibrium:  0.150
+
+================================================================================
+PARETO FRONTIER
+================================================================================
+
+[1] conversational_fp16_seq1024 (Score: 0.7982)
+    VRAM: 3000 MiB (75.5%)
+    Temp: 63.0°C
+    Hamiltonian: 7.764
+    Objective Scores:
+      vram_efficiency           0.5773
+      compute_throughput        1.0000
+      model_accuracy            1.2500
+      waveform_equilibrium      0.0000
+
+[2] conversational_fp16_seq2048 (Score: 0.7982)
+    VRAM: 3000 MiB (75.5%)
+    Temp: 63.0°C
+    Hamiltonian: 7.764
+    Objective Scores:
+      vram_efficiency           0.5773
+      compute_throughput        1.0000
+      model_accuracy            1.2500
+      waveform_equilibrium      0.0000
+
+================================================================================

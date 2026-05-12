@@ -1,0 +1,58 @@
+================================================================================
+ORTHOGONAL OPTIMIZATION REPORT
+================================================================================
+Workload Type: vision
+Total Operating Points Evaluated: 8
+Pareto-Optimal Configurations: 4
+
+Optimization Weights:
+  VRAM Efficiency:       0.200
+  Compute Throughput:    0.500
+  Model Accuracy:        0.200
+  Waveform Equilibrium:  0.100
+
+================================================================================
+PARETO FRONTIER
+================================================================================
+
+[1] vision_b8_i640 (Score: 0.7759)
+    VRAM: 2208 MiB (55.6%)
+    Temp: 54.0°C
+    Hamiltonian: 5.740
+    Objective Scores:
+      vram_efficiency           0.5397
+      compute_throughput        1.0000
+      model_accuracy            0.8400
+      waveform_equilibrium      0.0000
+
+[2] vision_b4_i640 (Score: 0.7704)
+    VRAM: 1728 MiB (43.5%)
+    Temp: 48.6°C
+    Hamiltonian: 4.513
+    Objective Scores:
+      vram_efficiency           0.4319
+      compute_throughput        1.0000
+      model_accuracy            0.9200
+      waveform_equilibrium      0.0000
+
+[3] vision_b2_i640 (Score: 0.7667)
+    VRAM: 1488 MiB (37.5%)
+    Temp: 45.9°C
+    Hamiltonian: 3.900
+    Objective Scores:
+      vram_efficiency           0.3733
+      compute_throughput        1.0000
+      model_accuracy            0.9600
+      waveform_equilibrium      0.0000
+
+[4] vision_b1_i640 (Score: 0.7439)
+    VRAM: 1368 MiB (34.4%)
+    Temp: 44.5°C
+    Hamiltonian: 3.593
+    Objective Scores:
+      vram_efficiency           0.3435
+      compute_throughput        0.9583
+      model_accuracy            0.9800
+      waveform_equilibrium      0.0000
+
+================================================================================

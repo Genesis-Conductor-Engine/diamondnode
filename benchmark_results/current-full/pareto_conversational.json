@@ -1,0 +1,393 @@
+{
+  "workload_type": "conversational",
+  "weights": {
+    "vram_efficiency": 0.3,
+    "compute_throughput": 0.25,
+    "model_accuracy": 0.3,
+    "waveform_equilibrium": 0.15
+  },
+  "constraints": {
+    "vram_max_mib": 3400,
+    "temp_max_c": 80.0,
+    "hamiltonian_max": 8.5,
+    "latency_p95_max_ms": 1000.0
+  },
+  "history": [
+    {
+      "config_name": "conversational_int4_seq1024",
+      "system_state": {
+        "vram_used_mib": 1200,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 30.211480362537763,
+        "temp_celsius": 42.595166163142,
+        "hamiltonian": 3.163765780103582,
+        "active_models": [],
+        "timestamp": 1778572243.757524
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 60.0,
+          "accuracy_score": 5.2,
+          "latency_p50_ms": 16.666666666666668,
+          "latency_p95_ms": 25.0,
+          "timestamp": 1778572243.7575214,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.3016477579700087,
+        "compute_throughput": 1.0,
+        "model_accuracy": 0.9615384615384615,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.628955865852541,
+      "is_pareto_optimal": false
+    },
+    {
+      "config_name": "conversational_int4_seq2048",
+      "system_state": {
+        "vram_used_mib": 1200,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 30.211480362537763,
+        "temp_celsius": 42.595166163142,
+        "hamiltonian": 3.163765780103582,
+        "active_models": [],
+        "timestamp": 1778572243.7575788
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 30.0,
+          "accuracy_score": 5.2,
+          "latency_p50_ms": 33.333333333333336,
+          "latency_p95_ms": 50.0,
+          "timestamp": 1778572243.7575765,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.3016477579700087,
+        "compute_throughput": 1.0,
+        "model_accuracy": 0.9615384615384615,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.628955865852541,
+      "is_pareto_optimal": false
+    },
+    {
+      "config_name": "conversational_int4_seq4096",
+      "system_state": {
+        "vram_used_mib": 1200,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 30.211480362537763,
+        "temp_celsius": 42.595166163142,
+        "hamiltonian": 3.163765780103582,
+        "active_models": [],
+        "timestamp": 1778572243.7576191
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 15.0,
+          "accuracy_score": 5.2,
+          "latency_p50_ms": 66.66666666666667,
+          "latency_p95_ms": 100.0,
+          "timestamp": 1778572243.7576172,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.3016477579700087,
+        "compute_throughput": 0.75,
+        "model_accuracy": 0.9615384615384615,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.566455865852541,
+      "is_pareto_optimal": false
+    },
+    {
+      "config_name": "conversational_int8_seq1024",
+      "system_state": {
+        "vram_used_mib": 1800,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 45.31722054380665,
+        "temp_celsius": 49.39274924471299,
+        "hamiltonian": 4.697099563012516,
+        "active_models": [],
+        "timestamp": 1778572243.7576504
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 1800,
+          "throughput_ops_per_sec": 48.0,
+          "accuracy_score": 4.4,
+          "latency_p50_ms": 20.833333333333332,
+          "latency_p95_ms": 31.25,
+          "timestamp": 1778572243.757649,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.4491113707293696,
+        "compute_throughput": 1.0,
+        "model_accuracy": 1.1363636363636362,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.7256425021279018,
+      "is_pareto_optimal": false
+    },
+    {
+      "config_name": "conversational_int8_seq2048",
+      "system_state": {
+        "vram_used_mib": 1800,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 45.31722054380665,
+        "temp_celsius": 49.39274924471299,
+        "hamiltonian": 4.697099563012516,
+        "active_models": [],
+        "timestamp": 1778572243.7576804
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 1800,
+          "throughput_ops_per_sec": 24.0,
+          "accuracy_score": 4.4,
+          "latency_p50_ms": 41.666666666666664,
+          "latency_p95_ms": 62.5,
+          "timestamp": 1778572243.757679,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.4491113707293696,
+        "compute_throughput": 1.0,
+        "model_accuracy": 1.1363636363636362,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.7256425021279018,
+      "is_pareto_optimal": false
+    },
+    {
+      "config_name": "conversational_int8_seq4096",
+      "system_state": {
+        "vram_used_mib": 1800,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 45.31722054380665,
+        "temp_celsius": 49.39274924471299,
+        "hamiltonian": 4.697099563012516,
+        "active_models": [],
+        "timestamp": 1778572243.7577324
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 1800,
+          "throughput_ops_per_sec": 12.0,
+          "accuracy_score": 4.4,
+          "latency_p50_ms": 83.33333333333333,
+          "latency_p95_ms": 125.0,
+          "timestamp": 1778572243.7577305,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.4491113707293696,
+        "compute_throughput": 0.6,
+        "model_accuracy": 1.1363636363636362,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.6256425021279017,
+      "is_pareto_optimal": false
+    },
+    {
+      "config_name": "conversational_fp16_seq1024",
+      "system_state": {
+        "vram_used_mib": 3000,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 75.52870090634441,
+        "temp_celsius": 62.987915407854985,
+        "hamiltonian": 7.763767128830385,
+        "active_models": [],
+        "timestamp": 1778572243.7577717
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 3000,
+          "throughput_ops_per_sec": 40.0,
+          "accuracy_score": 4.0,
+          "latency_p50_ms": 25.0,
+          "latency_p95_ms": 37.5,
+          "timestamp": 1778572243.7577696,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.5772753873276036,
+        "compute_throughput": 1.0,
+        "model_accuracy": 1.25,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.7981826161982811,
+      "is_pareto_optimal": true
+    },
+    {
+      "config_name": "conversational_fp16_seq2048",
+      "system_state": {
+        "vram_used_mib": 3000,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 75.52870090634441,
+        "temp_celsius": 62.987915407854985,
+        "hamiltonian": 7.763767128830385,
+        "active_models": [],
+        "timestamp": 1778572243.757809
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 3000,
+          "throughput_ops_per_sec": 20.0,
+          "accuracy_score": 4.0,
+          "latency_p50_ms": 50.0,
+          "latency_p95_ms": 75.0,
+          "timestamp": 1778572243.757807,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.5772753873276036,
+        "compute_throughput": 1.0,
+        "model_accuracy": 1.25,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.7981826161982811,
+      "is_pareto_optimal": true
+    },
+    {
+      "config_name": "conversational_fp16_seq4096",
+      "system_state": {
+        "vram_used_mib": 3000,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 75.52870090634441,
+        "temp_celsius": 62.987915407854985,
+        "hamiltonian": 7.763767128830385,
+        "active_models": [],
+        "timestamp": 1778572243.7578382
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 3000,
+          "throughput_ops_per_sec": 10.0,
+          "accuracy_score": 4.0,
+          "latency_p50_ms": 100.0,
+          "latency_p95_ms": 150.0,
+          "timestamp": 1778572243.7578368,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.5772753873276036,
+        "compute_throughput": 0.5,
+        "model_accuracy": 1.25,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.6731826161982811,
+      "is_pareto_optimal": false
+    }
+  ],
+  "pareto_frontier": [
+    {
+      "config_name": "conversational_fp16_seq1024",
+      "system_state": {
+        "vram_used_mib": 3000,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 75.52870090634441,
+        "temp_celsius": 62.987915407854985,
+        "hamiltonian": 7.763767128830385,
+        "active_models": [],
+        "timestamp": 1778572243.7577717
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 3000,
+          "throughput_ops_per_sec": 40.0,
+          "accuracy_score": 4.0,
+          "latency_p50_ms": 25.0,
+          "latency_p95_ms": 37.5,
+          "timestamp": 1778572243.7577696,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.5772753873276036,
+        "compute_throughput": 1.0,
+        "model_accuracy": 1.25,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.7981826161982811,
+      "is_pareto_optimal": true
+    },
+    {
+      "config_name": "conversational_fp16_seq2048",
+      "system_state": {
+        "vram_used_mib": 3000,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 75.52870090634441,
+        "temp_celsius": 62.987915407854985,
+        "hamiltonian": 7.763767128830385,
+        "active_models": [],
+        "timestamp": 1778572243.757809
+      },
+      "model_metrics": {
+        "qwen-1.5": {
+          "model_name": "qwen-1.5",
+          "vram_used_mib": 3000,
+          "throughput_ops_per_sec": 20.0,
+          "accuracy_score": 4.0,
+          "latency_p50_ms": 50.0,
+          "latency_p95_ms": 75.0,
+          "timestamp": 1778572243.757807,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.5772753873276036,
+        "compute_throughput": 1.0,
+        "model_accuracy": 1.25,
+        "waveform_equilibrium": 0.0
+      },
+      "total_score": 0.7981826161982811,
+      "is_pareto_optimal": true
+    }
+  ]
+}

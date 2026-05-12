@@ -1,0 +1,38 @@
+================================================================================
+ORTHOGONAL OPTIMIZATION REPORT
+================================================================================
+Workload Type: balanced
+Total Operating Points Evaluated: 2
+Pareto-Optimal Configurations: 2
+
+Optimization Weights:
+  VRAM Efficiency:       0.250
+  Compute Throughput:    0.250
+  Model Accuracy:        0.250
+  Waveform Equilibrium:  0.250
+
+================================================================================
+PARETO FRONTIER
+================================================================================
+
+[1] balanced_s1024_b2 (Score: 0.6947)
+    VRAM: 1350 MiB (34.0%)
+    Temp: 44.3°C
+    Hamiltonian: 3.547
+    Objective Scores:
+      vram_efficiency           0.3391
+      compute_throughput        1.0000
+      model_accuracy            0.9755
+      waveform_equilibrium      0.4642
+
+[2] balanced_s512_b1 (Score: 0.6242)
+    VRAM: 1350 MiB (34.0%)
+    Temp: 44.3°C
+    Hamiltonian: 3.547
+    Objective Scores:
+      vram_efficiency           0.3391
+      compute_throughput        0.9792
+      model_accuracy            0.9807
+      waveform_equilibrium      0.1979
+
+================================================================================

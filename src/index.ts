@@ -2,6 +2,13 @@ import type { Env } from "./types.js";
 import { handleHealth } from "./health.js";
 import { handleAuditReplay } from "./audit.js";
 import { initializeAppSignal, trackRequest, trackError } from "./appsignal.js";
+import {
+  handleNotionHealth,
+  handleNotionOffload,
+  handleNotionEmbed,
+  handleNotionQuery,
+  handleNotionSearch,
+} from "./notion.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -36,6 +43,16 @@ export default {
           ts: new Date().toISOString(),
           monitoring: env.APPSIGNAL_KEY ? "enabled" : "disabled",
         });
+      } else if (pathname === "/notion/health" || pathname === "/notion/healthz") {
+        response = await handleNotionHealth(request, env);
+      } else if (pathname === "/notion/offload" && request.method === "POST") {
+        response = await handleNotionOffload(request, env);
+      } else if (pathname === "/notion/embed" && request.method === "POST") {
+        response = await handleNotionEmbed(request, env);
+      } else if (pathname === "/notion/query" && request.method === "POST") {
+        response = await handleNotionQuery(request, env);
+      } else if (pathname === "/notion/search" && request.method === "POST") {
+        response = await handleNotionSearch(request, env);
       } else {
         response = new Response("Not Found", { status: 404 });
       }

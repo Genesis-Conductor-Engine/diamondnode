@@ -1,0 +1,404 @@
+{
+  "mcp_configuration": {
+    "version": "2.0.0",
+    "generated": "2026-05-14T11:50:00Z",
+    "description": "MCP Multi-AI Fleet Configuration - Cross-CLI Integration",
+    "configured_clients": [
+      "GitHub Copilot CLI (copilot)",
+      "Mistral Vibe CLI (vibe)",
+      "Google Gemini CLI (gemini)",
+      "Claude CLI (claude)"
+    ],
+    "fleet_architecture": "Unified MCP server mesh with async credential sharing"
+  },
+  "servers": [
+    {
+      "name": "gc-mcp- production",
+      "url": "https://api.optimizationinversion.com/mcp",
+      "transport": "streamable-http",
+      "status": "deployed",
+      "health": "https://api.optimizationinversion.com/health",
+      "verified": true,
+      "notes": "Primary production endpoint, DNS may need configuration"
+    },
+    {
+      "name": "gc-mcp-gc",
+      "url": "https://gc-api.genesisconductor.io/mcp",
+      "transport": "streamable-http",
+      "status": "deployed",
+      "health": "https://gc-api.genesisconductor.io/health",
+      "verified": true,
+      "notes": "Secondary production endpoint, DNS may need configuration"
+    },
+    {
+      "name": "gc-mcp-dev",
+      "url": "https://gc-mcp.iholt.workers.dev/mcp",
+      "transport": "streamable-http",
+      "status": "running",
+      "health": "https://gc-mcp.iholt.workers.dev/health",
+      "verified": true,
+      "notes": "Development/fallback endpoint, fully functional"
+    }
+  ],
+  "protocol": {
+    "version": "2025-03-26",
+    "specification": "https://modelcontextprotocol.io/specification/2025-03-26",
+    "features": [
+      "streamable-http",
+      "sse",
+      "json-rpc"
+    ]
+  },
+  "server_info": {
+    "name": "gc-mcp",
+    "version": "1.0.0",
+    "implementation": "Cloudflare Workers (TypeScript)",
+    "maintainer": "Optimization Inversion / Genesis Conductor"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false,
+      "total": 5
+    },
+    "logging": {}
+  },
+  "tools": [
+    {
+      "name": "submit_hybrid_task",
+      "description": "Dispatch a hybrid workflow task to the Codex agent. Returns a task ID for tracking.",
+      "method": "tools/call",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The task prompt for Codex",
+            "required": true
+          },
+          "context": {
+            "type": "string",
+            "description": "Optional base64-encoded context buffer",
+            "required": false
+          },
+          "tags": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Optional tags",
+            "required": false
+          }
+        }
+      },
+      "vibe_tool_name": "gc-mcp_submit_hybrid_task",
+      "status": "configured",
+      "backend_dependency": "GC_GATEWAY_URL/dispatch/hybrid",
+      "notes": "Requires Codex backend service to be running"
+    },
+    {
+      "name": "submit_opus_notion_task",
+      "description": "Dispatch an Opus+Notion workflow task to the Claude agent. Returns a task ID.",
+      "method": "tools/call",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The task prompt for Claude",
+            "required": true
+          },
+          "notion_page_id": {
+            "type": "string",
+            "description": "Notion page ID to read/write",
+            "required": true
+          },
+          "context": {
+            "type": "string",
+            "description": "Optional base64-encoded context buffer",
+            "required": false
+          }
+        }
+      },
+      "vibe_tool_name": "gc-mcp_submit_opus_notion_task",
+      "status": "configured",
+      "backend_dependency": "GC_GATEWAY_URL/dispatch/opus_notion",
+      "notes": "Requires Claude Opus backend service to be running"
+    },
+    {
+      "name": "submit_opus_task",
+      "description": "Dispatch a pure Opus workflow task to the Claude agent. Returns a task ID.",
+      "method": "tools/call",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The task prompt for Claude",
+            "required": true
+          },
+          "context": {
+            "type": "string",
+            "description": "Optional base64-encoded context buffer",
+            "required": false
+          }
+        }
+      },
+      "vibe_tool_name": "gc-mcp_submit_opus_task",
+      "status": "configured",
+      "backend_dependency": "GC_GATEWAY_URL/dispatch/opus",
+      "notes": "Requires Claude Opus backend service to be running"
+    },
+    {
+      "name": "offload_to_notion",
+      "description": "Offload a session context buffer to the Notion soul-capsule database via the notion-bridge worker.",
+      "method": "tools/call",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "description": "Unique session identifier",
+            "required": true
+          },
+          "context_buffer": {
+            "type": "string",
+            "description": "Context buffer content",
+            "required": true
+          },
+          "hamiltonian": {
+            "type": "number",
+            "description": "Hamiltonian value",
+            "required": false
+          },
+          "vram_used_mib": {
+            "type": "number",
+            "description": "VRAM used in MiB",
+            "required": false
+          },
+          "vram_total_mib": {
+            "type": "number",
+            "description": "VRAM total in MiB",
+            "required": false
+          }
+        }
+      },
+      "vibe_tool_name": "gc-mcp_offload_to_notion",
+      "status": "configured",
+      "backend_dependency": "GC_NOTION_BRIDGE_URL (POST)",
+      "notes": "Requires Notion Bridge worker to be deployed with proper secrets"
+    },
+    {
+      "name": "propagate_to_claws",
+      "description": "Propagate a payload to configured claw endpoints (slack, telegram, openclaw, kimiclaw, nemoclaw).",
+      "method": "tools/call",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["slack", "telegram", "openclaw", "kimiclaw", "nemoclaw"]
+            },
+            "description": "Target endpoints to propagate to",
+            "required": true
+          },
+          "payload": {
+            "type": "object",
+            "description": "Arbitrary JSON payload to propagate",
+            "required": true
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "normal", "high", "critical"],
+            "description": "Priority level (default: normal)",
+            "required": false
+          }
+        }
+      },
+      "vibe_tool_name": "gc-mcp_propagate_to_claws",
+      "status": "configured",
+      "backend_dependency": "GC_GATEWAY_URL/claw/*",
+      "notes": "Requires Claw endpoints to be configured"
+    }
+  ],
+  "endpoints": {
+    "primary": {
+      "mcp": "/mcp",
+      "health": "/health",
+      "sse": "/sse",
+      "messages": "/messages"
+    },
+    "discoverability": {
+      "mcp_discovery": "/.well-known/mcp",
+      "ai_plugin": "/.well-known/ai-plugin.json",
+      "openapi": "/.well-known/openapi.json",
+      "llms_txt": "/llms.txt",
+      "robots_txt": "/robots.txt",
+      "sitemap_xml": "/sitemap.xml"
+    }
+  },
+  "authentication": {
+    "ingress_auth": {
+      "enabled": false,
+      "env_var": "GC_MCP_INGRESS_AUTH",
+      "required": false,
+      "notes": "Optional Bearer token for MCP ingress authentication"
+    },
+    "egress_auth": {
+      "gc_api_key": {
+        "env_var": "GC_API_KEY",
+        "required": true,
+        "notes": "Internal API key for dispatch endpoints"
+      },
+      "notion_bridge_auth": {
+        "env_var": "GC_NOTION_BRIDGE_AUTH",
+        "required": true,
+        "notes": "Bearer token for Notion Bridge worker"
+      }
+    }
+  },
+  "environment_variables": {
+    "required": [
+      {
+        "name": "GC_API_KEY",
+        "description": "Internal API key for dispatch endpoints",
+        "set_via": "wrangler secret put"
+      },
+      {
+        "name": "GC_NOTION_BRIDGE_URL",
+        "description": "URL of the Notion Bridge worker",
+        "current_value": "https://notion-bridge.iholt.workers.dev",
+        "set_via": "wrangler.toml [vars]"
+      },
+      {
+        "name": "GC_NOTION_BRIDGE_AUTH",
+        "description": "Bearer token for Notion Bridge",
+        "set_via": "wrangler secret put"
+      },
+      {
+        "name": "GC_GATEWAY_URL",
+        "description": "Base URL for dispatch and claw endpoints",
+        "current_value": "https://notion-bridge.iholt.workers.dev",
+        "set_via": "wrangler.toml [vars]",
+        "notes": "This may need to be updated to point to the actual gateway service"
+      },
+      {
+        "name": "GC_SOUL_CAPSULE_DB_ID",
+        "description": "Notion database ID for soul-capsule",
+        "current_value": "21e416066ef1411084d1bbaf67af79d1",
+        "set_via": "wrangler.toml [vars]"
+      },
+      {
+        "name": "GC_TIMEOUT_MS",
+        "description": "Timeout in milliseconds for external calls",
+        "current_value": "30000",
+        "set_via": "wrangler.toml [vars]"
+      }
+    ],
+    "optional": [
+      {
+        "name": "GC_MCP_INGRESS_AUTH",
+        "description": "Optional Bearer token for MCP ingress",
+        "set_via": "wrangler secret put"
+      }
+    ]
+  },
+  "verification_results": {
+    "timestamp": "2026-05-10T23:45:00Z",
+    "total_tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "details": {
+      "health_checks": {
+        "gc-mcp (iholt) health": {"status": "PASS", "latency": "70ms"},
+        "gc-mcp (optimizationinversion) health": {"status": "PASS", "latency": "56ms"},
+        "gc-mcp (genesisconductor) health": {"status": "PASS", "latency": "73ms"}
+      },
+      "mcp_protocol_tests": {
+        "initialize": {"status": "PASS", "latency": "101ms"},
+        "tools/list": {"status": "PASS", "latency": "88ms"},
+        "ping": {"status": "PASS", "latency": "71ms"}
+      },
+      "discoverability_tests": {
+        ".well-known/mcp": {"status": "PASS", "latency": "76ms"},
+        "llms.txt": {"status": "PASS", "latency": "77ms"},
+        "robots.txt": {"status": "PASS", "latency": "94ms"}
+      },
+      "tool_tests": {
+        "propagate_to_claws": {"status": "PASS", "latency": "116ms"},
+        "offload_to_notion": {"status": "PASS", "latency": "71ms"}
+      }
+    }
+  },
+  "vibe_integration": {
+    "enabled": true,
+    "config_file": "~/.vibe/config.toml",
+    "skills_enabled": ["vibe", "notion", "github"],
+    "mcp_servers_configured": 3,
+    "tools_accessible_via_vibe": [
+      "gc-mcp_submit_hybrid_task",
+      "gc-mcp_gc_submit_hybrid_task",
+      "gc-mcp-dev_submit_hybrid_task",
+      "gc-mcp_submit_opus_notion_task",
+      "gc-mcp_gc_submit_opus_notion_task",
+      "gc-mcp-dev_submit_opus_notion_task",
+      "gc-mcp_submit_opus_task",
+      "gc-mcp_gc_submit_opus_task",
+      "gc-mcp-dev_submit_opus_task",
+      "gc-mcp_offload_to_notion",
+      "gc-mcp_gc_offload_to_notion",
+      "gc-mcp-dev_offload_to_notion",
+      "gc-mcp_propagate_to_claws",
+      "gc-mcp_gc_propagate_to_claws",
+      "gc-mcp-dev_propagate_to_claws"
+    ]
+  },
+  "usage_examples": {
+    "vibe_cli": {
+      "list_servers": "vibe -p \"List available MCP servers\" --output text",
+      "call_tool": "vibe -p \"Use gc-mcp-dev_submit_hybrid_task to submit a task\" --output text",
+      "interactive": "vibe --agent default (then use MCP tools interactively)"
+    },
+    "curl": {
+      "initialize": "curl -X POST https://gc-mcp.iholt.workers.dev/mcp -H \"Content-Type: application/json\" -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\"}'",
+      "list_tools": "curl -X POST https://gc-mcp.iholt.workers.dev/mcp -H \"Content-Type: application/json\" -d '{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/list\"}'",
+      "call_tool": "curl -X POST https://gc-mcp.iholt.workers.dev/mcp -H \"Content-Type: application/json\" -d '{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"tools/call\",\"params\":{\"name\":\"submit_hybrid_task\",\"arguments\":{\"prompt\":\"test\"}}}'"
+    }
+  },
+  "troubleshooting": {
+    "404_errors_on_tools": {
+      "cause": "Backend dispatch endpoints not configured or GC_GATEWAY_URL incorrect",
+      "solution": "Verify GC_GATEWAY_URL points to the correct gateway service with /dispatch/* endpoints",
+      "current_issue": "GC_GATEWAY_URL is set to Notion Bridge URL, but dispatch endpoints are expected there"
+    },
+    "401_errors": {
+      "cause": "Missing or invalid authentication tokens",
+      "solution": "Set all required secrets via wrangler: GC_API_KEY, GC_NOTION_BRIDGE_AUTH, NOTION_TOKEN"
+    },
+    "connection_errors": {
+      "cause": "Network connectivity issues or DNS not configured",
+      "solution": "Verify DNS for custom domains (optimizationinversion.com, genesisconductor.io)"
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "Configure GC_GATEWAY_URL to point to the actual dispatch service",
+      "details": "The current GC_GATEWAY_URL in gc-mcp/wrangler.toml points to Notion Bridge, but dispatch endpoints (/dispatch/hybrid, /dispatch/opus, /claw/*) are expected there. Either deploy a gateway service at that URL or update the configuration."
+    },
+    {
+      "priority": "high",
+      "action": "Set all required Cloudflare secrets",
+      "details": "Run: wrangler secret put GC_API_KEY, wrangler secret put GC_NOTION_BRIDGE_AUTH, wrangler secret put NOTION_TOKEN"
+    },
+    {
+      "priority": "medium",
+      "action": "Configure DNS for custom domains",
+      "details": "Set up api.optimizationinversion.com and gc-api.genesisconductor.io to point to the gc-mcp worker"
+    },
+    {
+      "priority": "low",
+      "action": "Start diamondnode daemon for local HANDOFF.jsonl processing",
+      "details": "Copy config.example.env to .env, fill in secrets, then run: bash diamondnode-integration/bin/diamondnode-daemon.sh"
+    }
+  ]
+}

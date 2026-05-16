@@ -1,0 +1,203 @@
+{
+  "workload_type": "balanced",
+  "weights": {
+    "vram_efficiency": 0.25,
+    "compute_throughput": 0.25,
+    "model_accuracy": 0.25,
+    "waveform_equilibrium": 0.25
+  },
+  "constraints": {
+    "vram_max_mib": 3400,
+    "temp_max_c": 80.0,
+    "hamiltonian_max": 8.5,
+    "latency_p95_max_ms": 1000.0
+  },
+  "history": [
+    {
+      "config_name": "balanced_s512_b1",
+      "system_state": {
+        "vram_used_mib": 1350,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 33.987915407854985,
+        "temp_celsius": 44.294561933534744,
+        "hamiltonian": 3.5470992258308156,
+        "active_models": [],
+        "timestamp": 1778572243.7580316
+      },
+      "model_metrics": {
+        "cuda-q": {
+          "model_name": "cuda-q",
+          "vram_used_mib": 150,
+          "throughput_ops_per_sec": 500.0,
+          "accuracy_score": 0.02,
+          "latency_p50_ms": 2.0,
+          "latency_p95_ms": 3.0,
+          "timestamp": 1778572243.7580268,
+          "purity": 0.9400000000000001,
+          "effective_dimension": 20.0,
+          "energy_gradient": 0.02
+        },
+        "yolo11s": {
+          "model_name": "yolo11s",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 28.749999999999996,
+          "accuracy_score": 0.735,
+          "latency_p50_ms": 34.78260869565218,
+          "latency_p95_ms": 41.739130434782616,
+          "timestamp": 1778572243.75803,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.33906306001514475,
+        "compute_throughput": 0.9791666666666666,
+        "model_accuracy": 0.9806862745098038,
+        "waveform_equilibrium": 0.1978947368421053
+      },
+      "total_score": 0.6242026845084301,
+      "is_pareto_optimal": true
+    },
+    {
+      "config_name": "balanced_s1024_b2",
+      "system_state": {
+        "vram_used_mib": 1350,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 33.987915407854985,
+        "temp_celsius": 44.294561933534744,
+        "hamiltonian": 3.5470992258308156,
+        "active_models": [],
+        "timestamp": 1778572243.758092
+      },
+      "model_metrics": {
+        "cuda-q": {
+          "model_name": "cuda-q",
+          "vram_used_mib": 150,
+          "throughput_ops_per_sec": 250.0,
+          "accuracy_score": 0.01,
+          "latency_p50_ms": 4.0,
+          "latency_p95_ms": 6.0,
+          "timestamp": 1778572243.7580876,
+          "purity": 0.98,
+          "effective_dimension": 10.0,
+          "energy_gradient": 0.01
+        },
+        "yolo11s": {
+          "model_name": "yolo11s",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 32.5,
+          "accuracy_score": 0.72,
+          "latency_p50_ms": 30.76923076923077,
+          "latency_p95_ms": 36.92307692307692,
+          "timestamp": 1778572243.7580903,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.33906306001514475,
+        "compute_throughput": 1.0,
+        "model_accuracy": 0.9755445544554455,
+        "waveform_equilibrium": 0.4642105263157895
+      },
+      "total_score": 0.694704535196595,
+      "is_pareto_optimal": true
+    }
+  ],
+  "pareto_frontier": [
+    {
+      "config_name": "balanced_s1024_b2",
+      "system_state": {
+        "vram_used_mib": 1350,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 33.987915407854985,
+        "temp_celsius": 44.294561933534744,
+        "hamiltonian": 3.5470992258308156,
+        "active_models": [],
+        "timestamp": 1778572243.758092
+      },
+      "model_metrics": {
+        "cuda-q": {
+          "model_name": "cuda-q",
+          "vram_used_mib": 150,
+          "throughput_ops_per_sec": 250.0,
+          "accuracy_score": 0.01,
+          "latency_p50_ms": 4.0,
+          "latency_p95_ms": 6.0,
+          "timestamp": 1778572243.7580876,
+          "purity": 0.98,
+          "effective_dimension": 10.0,
+          "energy_gradient": 0.01
+        },
+        "yolo11s": {
+          "model_name": "yolo11s",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 32.5,
+          "accuracy_score": 0.72,
+          "latency_p50_ms": 30.76923076923077,
+          "latency_p95_ms": 36.92307692307692,
+          "timestamp": 1778572243.7580903,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.33906306001514475,
+        "compute_throughput": 1.0,
+        "model_accuracy": 0.9755445544554455,
+        "waveform_equilibrium": 0.4642105263157895
+      },
+      "total_score": 0.694704535196595,
+      "is_pareto_optimal": true
+    },
+    {
+      "config_name": "balanced_s512_b1",
+      "system_state": {
+        "vram_used_mib": 1350,
+        "vram_total_mib": 3972,
+        "vram_util_pct": 33.987915407854985,
+        "temp_celsius": 44.294561933534744,
+        "hamiltonian": 3.5470992258308156,
+        "active_models": [],
+        "timestamp": 1778572243.7580316
+      },
+      "model_metrics": {
+        "cuda-q": {
+          "model_name": "cuda-q",
+          "vram_used_mib": 150,
+          "throughput_ops_per_sec": 500.0,
+          "accuracy_score": 0.02,
+          "latency_p50_ms": 2.0,
+          "latency_p95_ms": 3.0,
+          "timestamp": 1778572243.7580268,
+          "purity": 0.9400000000000001,
+          "effective_dimension": 20.0,
+          "energy_gradient": 0.02
+        },
+        "yolo11s": {
+          "model_name": "yolo11s",
+          "vram_used_mib": 1200,
+          "throughput_ops_per_sec": 28.749999999999996,
+          "accuracy_score": 0.735,
+          "latency_p50_ms": 34.78260869565218,
+          "latency_p95_ms": 41.739130434782616,
+          "timestamp": 1778572243.75803,
+          "purity": null,
+          "effective_dimension": null,
+          "energy_gradient": null
+        }
+      },
+      "objective_scores": {
+        "vram_efficiency": 0.33906306001514475,
+        "compute_throughput": 0.9791666666666666,
+        "model_accuracy": 0.9806862745098038,
+        "waveform_equilibrium": 0.1978947368421053
+      },
+      "total_score": 0.6242026845084301,
+      "is_pareto_optimal": true
+    }
+  ]
+}

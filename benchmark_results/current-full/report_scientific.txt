@@ -1,0 +1,78 @@
+================================================================================
+ORTHOGONAL OPTIMIZATION REPORT
+================================================================================
+Workload Type: scientific
+Total Operating Points Evaluated: 12
+Pareto-Optimal Configurations: 6
+
+Optimization Weights:
+  VRAM Efficiency:       0.150
+  Compute Throughput:    0.250
+  Model Accuracy:        0.450
+  Waveform Equilibrium:  0.150
+
+================================================================================
+PARETO FRONTIER
+================================================================================
+
+[1] scientific_q16_s1024 (Score: 0.7732)
+    VRAM: 200 MiB (5.0%)
+    Temp: 31.3°C
+    Hamiltonian: 0.608
+    Objective Scores:
+      vram_efficiency           0.0503
+      compute_throughput        1.0000
+      model_accuracy            0.9911
+      waveform_equilibrium      0.4642
+
+[2] scientific_q12_s2048 (Score: 0.7717)
+    VRAM: 180 MiB (4.5%)
+    Temp: 31.0°C
+    Hamiltonian: 0.557
+    Objective Scores:
+      vram_efficiency           0.0453
+      compute_throughput        0.6667
+      model_accuracy            0.9960
+      waveform_equilibrium      1.0000
+
+[3] scientific_q16_s2048 (Score: 0.7308)
+    VRAM: 200 MiB (5.0%)
+    Temp: 31.3°C
+    Hamiltonian: 0.608
+    Objective Scores:
+      vram_efficiency           0.0503
+      compute_throughput        0.5000
+      model_accuracy            0.9960
+      waveform_equilibrium      1.0000
+
+[4] scientific_q20_s512 (Score: 0.7296)
+    VRAM: 220 MiB (5.5%)
+    Temp: 31.5°C
+    Hamiltonian: 0.659
+    Objective Scores:
+      vram_efficiency           0.0554
+      compute_throughput        1.0000
+      model_accuracy            0.9814
+      waveform_equilibrium      0.1979
+
+[5] scientific_q20_s1024 (Score: 0.7239)
+    VRAM: 220 MiB (5.5%)
+    Temp: 31.5°C
+    Hamiltonian: 0.659
+    Objective Scores:
+      vram_efficiency           0.0554
+      compute_throughput        0.8000
+      model_accuracy            0.9911
+      waveform_equilibrium      0.4642
+
+[6] scientific_q20_s2048 (Score: 0.7065)
+    VRAM: 220 MiB (5.5%)
+    Temp: 31.5°C
+    Hamiltonian: 0.659
+    Objective Scores:
+      vram_efficiency           0.0554
+      compute_throughput        0.4000
+      model_accuracy            0.9960
+      waveform_equilibrium      1.0000
+
+================================================================================

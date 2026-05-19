@@ -9,6 +9,7 @@ import {
   handleNotionQuery,
   handleNotionSearch,
 } from "./notion.js";
+import { checkAndBlockBot } from "./botid.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -31,8 +32,16 @@ export default {
 
       // Route handling
       if (pathname === "/healthz" || pathname === "/health") {
+        // Basic bot protection for health endpoint
+        const botBlock = await checkAndBlockBot(request, "basic");
+        if (botBlock) return botBlock;
+        
         response = await handleHealth(request, env, ctx);
       } else if (pathname === "/audit/replay") {
+        // Deep bot protection for audit endpoint
+        const botBlock = await checkAndBlockBot(request, "deepAnalysis");
+        if (botBlock) return botBlock;
+        
         response = await handleAuditReplay(request);
       } else if (pathname === "/.well-known/diamond-node.json") {
         response = Response.json({
@@ -44,14 +53,34 @@ export default {
           monitoring: env.APPSIGNAL_KEY ? "enabled" : "disabled",
         });
       } else if (pathname === "/notion/health" || pathname === "/notion/healthz") {
+        // Basic bot protection for notion health
+        const botBlock = await checkAndBlockBot(request, "basic");
+        if (botBlock) return botBlock;
+        
         response = await handleNotionHealth(request, env);
       } else if (pathname === "/notion/offload" && request.method === "POST") {
+        // Deep bot protection for notion API endpoints
+        const botBlock = await checkAndBlockBot(request, "deepAnalysis");
+        if (botBlock) return botBlock;
+        
         response = await handleNotionOffload(request, env);
       } else if (pathname === "/notion/embed" && request.method === "POST") {
+        // Deep bot protection for notion API endpoints
+        const botBlock = await checkAndBlockBot(request, "deepAnalysis");
+        if (botBlock) return botBlock;
+        
         response = await handleNotionEmbed(request, env);
       } else if (pathname === "/notion/query" && request.method === "POST") {
+        // Deep bot protection for notion API endpoints
+        const botBlock = await checkAndBlockBot(request, "deepAnalysis");
+        if (botBlock) return botBlock;
+        
         response = await handleNotionQuery(request, env);
       } else if (pathname === "/notion/search" && request.method === "POST") {
+        // Deep bot protection for notion API endpoints
+        const botBlock = await checkAndBlockBot(request, "deepAnalysis");
+        if (botBlock) return botBlock;
+        
         response = await handleNotionSearch(request, env);
       } else {
         response = new Response("Not Found", { status: 404 });

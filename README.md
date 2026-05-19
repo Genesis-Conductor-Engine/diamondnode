@@ -14,11 +14,18 @@ Genesis Conductor audit-node — QUBO simulation engine + Cloudflare Worker iden
 
 ## Endpoints
 
-| Path | Description |
-|---|---|
-| `GET /healthz` | `{ok, version, identity_pubkey, ts}` |
-| `GET /.well-known/diamond-node.json` | Identity manifest |
-| `GET /audit/replay?n=N` | Last N signed events (ring buffer) |
+| Path | Description | Bot Protection |
+|---|---|---|
+| `GET /healthz` | `{ok, version, identity_pubkey, ts}` | Basic |
+| `GET /.well-known/diamond-node.json` | Identity manifest | None |
+| `GET /audit/replay?n=N` | Last N signed events (ring buffer) | Deep |
+| `GET /notion/health` | Notion proxy health check | Basic |
+| `POST /notion/offload` | Offload context to Notion | Deep |
+| `POST /notion/embed` | Embed text via Notion | Deep |
+| `POST /notion/query` | Query Notion database | Deep |
+| `POST /notion/search` | Search Notion pages | Deep |
+
+**Bot Protection:** Powered by [BotID](https://vercel.com/docs/botid). Verified bots (Googlebot, etc.) allowed through. Unverified bots blocked with 403.
 
 ## Setup
 

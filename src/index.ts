@@ -11,6 +11,7 @@ import {
 } from "./notion.js";
 import { checkAndBlockBot } from "./botid.js";
 import { LANDING_HTML } from "./landing-html.js";
+import { YENNEFER_DASHBOARD_HTML } from "./yennefer-dashboard.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -40,6 +41,56 @@ export default {
             "Cache-Control": "public, max-age=3600",
           },
         });
+      } else if (pathname === "/dashboard" || pathname === "/yennefer") {
+        // Serve Yennefer dashboard
+        response = new Response(YENNEFER_DASHBOARD_HTML, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "public, max-age=300",
+          },
+        });
+      } else if (pathname === "/api/yennefer/metrics") {
+        // Proxy to local Yennefer orchestrator (via Cloudflare Tunnel)
+        const YENNEFER_API = env.YENNEFER_API_URL || "http://localhost:8080";
+        try {
+          const proxyResponse = await fetch(`${YENNEFER_API}/api/vram`, {
+            headers: {
+              "Authorization": env.GATEWAY_SECRET ? `Bearer ${env.GATEWAY_SECRET}` : "",
+            },
+          });
+          response = new Response(await proxyResponse.text(), {
+            status: proxyResponse.status,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          });
+        } catch (error) {
+          response = Response.json({ error: "Yennefer orchestrator unavailable", message: String(error) }, { status: 503 });
+        }
+      } else if (pathname === "/api/yennefer/orchestrate" && request.method === "POST") {
+        // Proxy orchestration requests to local Yennefer
+        const YENNEFER_API = env.YENNEFER_API_URL || "http://localhost:8080";
+        try {
+          const body = await request.text();
+          const proxyResponse = await fetch(`${YENNEFER_API}/v1/yennefer`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": env.GATEWAY_SECRET ? `Bearer ${env.GATEWAY_SECRET}` : "",
+            },
+            body,
+          });
+          response = new Response(await proxyResponse.text(), {
+            status: proxyResponse.status,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          });
+        } catch (error) {
+          response = Response.json({ error: "Yennefer orchestration failed", message: String(error) }, { status: 503 });
+        }
       } else if (pathname === "/healthz" || pathname === "/health") {
         // Basic bot protection for health endpoint
         const botBlock = await checkAndBlockBot(request, "basic");

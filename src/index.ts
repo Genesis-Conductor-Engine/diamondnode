@@ -10,6 +10,7 @@ import {
   handleNotionSearch,
 } from "./notion.js";
 import { checkAndBlockBot } from "./botid.js";
+import { LANDING_HTML } from "./landing-html.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -31,7 +32,15 @@ export default {
       let response: Response;
 
       // Route handling
-      if (pathname === "/healthz" || pathname === "/health") {
+      if (pathname === "/") {
+        // Serve landing page at root
+        response = new Response(LANDING_HTML, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
+          },
+        });
+      } else if (pathname === "/healthz" || pathname === "/health") {
         // Basic bot protection for health endpoint
         const botBlock = await checkAndBlockBot(request, "basic");
         if (botBlock) return botBlock;
@@ -82,6 +91,58 @@ export default {
         if (botBlock) return botBlock;
         
         response = await handleNotionSearch(request, env);
+      } else if (pathname === "/v1/identity") {
+        // Identity endpoint - public key + node identity
+        response = Response.json({
+          node_id: env.NODE_ID ?? "diamond-node",
+          version: env.NODE_VERSION ?? "0.1.0",
+          region: "global",
+          capabilities: ["sign", "attest", "ccip-read"],
+          identity_pubkey: env.DIAMOND_NODE_ED25519_PUB ?? "",
+          key_id: env.KEY_ID ?? "dn-2026-05",
+          ts: new Date().toISOString(),
+        });
+      } else if (pathname === "/.well-known/agent.json") {
+        // A2A Protocol agent manifest
+        response = Response.json({
+          schema_version: "1.0",
+          name: "YENNEFER",
+          description: "Diamond Node AI orchestration agent with GPU-backed inference and blockchain attestation",
+          homepage_url: "https://yennefer.quest",
+          contact_email: "node@genesisconductor.io",
+          legal_info_url: "https://genesisconductor.io/legal",
+          capabilities: {
+            inference: ["claude-opus", "yolo11", "embedding"],
+            attestation: ["ed25519-signature", "blockchain-anchor"],
+            orchestration: ["resource-hamiltonian", "qubo-optimization"],
+          },
+          endpoints: {
+            identity: "https://yennefer.quest/v1/identity",
+            health: "https://yennefer.quest/health",
+            sign: "https://yennefer.quest/v1/sign",
+          },
+          version: env.NODE_VERSION ?? "0.1.0",
+          node_id: env.NODE_ID ?? "diamond-node",
+        });
+      } else if (pathname === "/.well-known/ai-plugin.json") {
+        // OpenAI plugin manifest
+        response = Response.json({
+          schema_version: "v1",
+          name_for_human: "YENNEFER Agent",
+          name_for_model: "yennefer",
+          description_for_human: "AI orchestration with GPU inference and blockchain attestation",
+          description_for_model: "Access to Diamond Node GPU-backed AI inference (Claude, YOLO11), QUBO optimization, and Ed25519 signing/attestation capabilities",
+          auth: {
+            type: "none",
+          },
+          api: {
+            type: "openapi",
+            url: "https://yennefer.quest/openapi.json",
+          },
+          logo_url: "https://yennefer.quest/logo.png",
+          contact_email: "node@genesisconductor.io",
+          legal_info_url: "https://genesisconductor.io/legal",
+        });
       } else {
         response = new Response("Not Found", { status: 404 });
       }
@@ -108,3 +169,18 @@ export default {
     }
   },
 } satisfies ExportedHandler<Env>;
+
+// Durable Objects class - required for existing DO bindings
+export class NodeStateDO {
+  private state: DurableObjectState;
+  private env: Env;
+
+  constructor(state: DurableObjectState, env: Env) {
+    this.state = state;
+    this.env = env;
+  }
+
+  async fetch(request: Request): Promise<Response> {
+    return new Response("Not Implemented", { status: 501 });
+  }
+}

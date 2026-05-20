@@ -17,12 +17,18 @@ export async function handleHealth(
   };
 
   // Emit node.online once per isolate lifetime
+  // Wrap in try-catch to prevent health endpoint failures
   if (!onlineEmitted && env.DIAMOND_NODE_ED25519_PRIV) {
     onlineEmitted = true;
-    const raw = makeEvent("node.online", { version: body.version }, env);
-    const signed = await signEvent(raw, env.DIAMOND_NODE_ED25519_PRIV);
-    appendAudit(signed);
-    await emitToVault(signed, env.DIAMOND_VAULT_AUDIT_URL, ctx);
+    try {
+      const raw = makeEvent("node.online", { version: body.version }, env);
+      const signed = await signEvent(raw, env.DIAMOND_NODE_ED25519_PRIV);
+      appendAudit(signed);
+      await emitToVault(signed, env.DIAMOND_VAULT_AUDIT_URL, ctx);
+    } catch (error) {
+      // Log error but don't fail health check
+      console.error("Failed to emit node.online event:", error);
+    }
   }
 
   return Response.json(body);

@@ -23,6 +23,16 @@ export async function checkBotProtection(
   level: BotCheckLevel = "basic"
 ): Promise<BotIdCheckResult> {
   try {
+    // Skip bot check if checkBotId is not available (can happen in Workers)
+    if (typeof checkBotId !== 'function') {
+      return {
+        isBot: false,
+        isHuman: true,
+        isVerifiedBot: false,
+        reason: "BotID unavailable, allowing request",
+      };
+    }
+
     // Convert CF Request headers to Node.js IncomingHttpHeaders format
     const headers: Record<string, string> = {};
     request.headers.forEach((value, key) => {
@@ -85,11 +95,19 @@ export function createBotBlockedResponse(reason?: string): Response {
  * Returns null if request should proceed
  * 
  * Note: Verified bots (like Googlebot) are allowed through
+ * 
+ * Currently disabled in Cloudflare Workers due to compatibility issues with botid package
  */
 export async function checkAndBlockBot(
   request: Request,
   level: BotCheckLevel = "basic"
 ): Promise<Response | null> {
+  // Temporarily disable bot checking in Workers environment
+  // The botid package has Node.js dependencies that don't work in Workers
+  // TODO: Re-enable with a Workers-compatible bot detection library
+  return null;
+  
+  /* Original implementation (disabled):
   const result = await checkBotProtection(request, level);
   
   // Block unverified bots, but allow verified bots (search engines, etc.)
@@ -104,4 +122,5 @@ export async function checkAndBlockBot(
   }
   
   return null;
+  */
 }

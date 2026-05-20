@@ -13,7 +13,7 @@ AppSignal APM (Application Performance Monitoring) integration for diamond-node 
 **Current Status**:
 - ✅ Code integrated (`src/appsignal.ts`)
 - ✅ TypeScript passing (0 errors)
-- ✅ API key configured: `b9484e99-79b4-4341-ad99-1c264ad5cd93`
+- ✅ API key configured in Wrangler secret `APPSIGNAL_KEY` (value not stored in git)
 - ⏳ Awaiting Worker deployment
 
 ---
@@ -22,7 +22,7 @@ AppSignal APM (Application Performance Monitoring) integration for diamond-node 
 
 ### Prerequisites
 - Wrangler CLI authenticated
-- AppSignal API key (provided)
+- AppSignal API key available in the operator shell as `APPSIGNAL_KEY`
 
 ### Deploy with Monitoring
 
@@ -33,7 +33,7 @@ cd ~/diamond-node
 ./deploy-appsignal.sh
 
 # Manual deployment
-echo "b9484e99-79b4-4341-ad99-1c264ad5cd93" | npx wrangler secret put APPSIGNAL_KEY
+printf '%s' "$APPSIGNAL_KEY" | npx wrangler secret put APPSIGNAL_KEY
 npm run deploy
 
 # Verify
@@ -98,19 +98,19 @@ src/types.ts           - Environment types (APPSIGNAL_KEY)
 **Wrangler Secret** (Production):
 ```bash
 npx wrangler secret put APPSIGNAL_KEY
-# Value: b9484e99-79b4-4341-ad99-1c264ad5cd93
+# Value: use the operator-held AppSignal key; do not write it into git
 ```
 
 **Local Development**:
 ```bash
 # ~/.env (gitignored)
-APPSIGNAL_KEY=b9484e99-79b4-4341-ad99-1c264ad5cd93
+APPSIGNAL_KEY=replace-with-operator-held-value
 ```
 
 ### Security
 
 - ✅ API key stored as encrypted Wrangler secret
-- ✅ Not in source code or git history
+- ✅ Not in current source code
 - ✅ Accessed only at Worker runtime
 - ✅ GDPR compliant, no PII stored
 
@@ -193,7 +193,7 @@ Action: Email + PagerDuty
 npx wrangler secret list
 
 # Reconfigure if missing
-echo "b9484e99-79b4-4341-ad99-1c264ad5cd93" | npx wrangler secret put APPSIGNAL_KEY
+printf '%s' "$APPSIGNAL_KEY" | npx wrangler secret put APPSIGNAL_KEY
 
 # Redeploy
 npm run deploy

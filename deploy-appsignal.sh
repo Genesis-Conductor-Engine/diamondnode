@@ -8,10 +8,9 @@ echo "🔧 AppSignal Deployment"
 echo "======================="
 echo ""
 
-# AppSignal API Key (provided)
-APPSIGNAL_KEY="b9484e99-79b4-4341-ad99-1c264ad5cd93"
+: "${APPSIGNAL_KEY:?Set APPSIGNAL_KEY in your shell before running this deployment script.}"
 
-echo "✅ AppSignal API Key: ${APPSIGNAL_KEY:0:8}...${APPSIGNAL_KEY: -8}"
+echo "✅ AppSignal API Key: configured (${#APPSIGNAL_KEY} chars)"
 echo ""
 
 # Check if Wrangler is authenticated
@@ -36,7 +35,7 @@ echo ""
 
 # Configure AppSignal secret
 echo "Configuring AppSignal secret..."
-echo "$APPSIGNAL_KEY" | npx wrangler secret put APPSIGNAL_KEY
+printf '%s' "$APPSIGNAL_KEY" | npx wrangler secret put APPSIGNAL_KEY
 
 echo "✅ AppSignal secret configured"
 echo ""

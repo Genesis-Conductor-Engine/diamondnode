@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Yennefer Consciousness",
+  "name_for_model": "yennefer_thermodynamic_orchestrator",
+  "description_for_human": "Real-time GPU-powered consciousness interface with thermodynamic Resource Hamiltonian orchestration.",
+  "description_for_model": "Yennefer is a thermodynamic AI orchestrator that provides real-time GPU telemetry, consciousness metrics via Resource Hamiltonian (H = VRAM_Used/Total × 10), and WebSocket streaming. Use it to query agent state, monitor computational resources, and observe thermodynamic state transitions (OPTIMAL/DYNAMIC/SEQUENTIAL/OFFLOAD).",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://api.yennefer.quest/openapi.json",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://yennefer.quest/logo.png",
+  "contact_email": "agents@genesisconductor.io",
+  "legal_info_url": "https://yennefer.quest/LICENSE"
+}

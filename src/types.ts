@@ -9,10 +9,12 @@ export interface Env {
   NOTION_TOKEN?: string;              // Notion integration token (optional)
   NOTION_DATABASE_ID?: string;        // Notion database ID (default: 21e416066ef1411084d1bbaf67af79d1)
   GATEWAY_AUTH_SECRET?: string;       // Gateway authentication secret (optional)
+  GATEWAY_SECRET?: string;            // Gateway secret for orchestrator auth (optional)
   CUDA_Q_OPTIMIZED?: string;          // CUDA-Q optimization flag (default: "true")
   GTX1650_MODE?: string;              // GTX 1650 mode flag (default: "true")
   QUADRATIC_EMBEDDING?: string;       // Quadratic embedding flag (default: "true")
   QFLOP_THROUGHPUT?: string;          // QFlop throughput mode (default: "max")
+  YENNEFER_API_URL?: string;          // Yennefer orchestrator API URL (default: http://localhost:8080)
 
   // Vars — set in wrangler.toml [vars]
   NODE_VERSION: string;

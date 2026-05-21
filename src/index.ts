@@ -12,6 +12,7 @@ import {
 import { checkAndBlockBot } from "./botid.js";
 import { LANDING_HTML } from "./landing-html.js";
 import { YENNEFER_DASHBOARD_HTML } from "./yennefer-dashboard.js";
+import { handleSEORoutes } from "./seo-routes.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -31,6 +32,12 @@ export default {
 
     try {
       let response: Response;
+
+      // Check for SEO routes first (sitemap.xml, robots.txt, llms.txt)
+      const seoResponse = handleSEORoutes(pathname);
+      if (seoResponse) {
+        return seoResponse;
+      }
 
       // Route handling
       if (pathname === "/") {
@@ -91,6 +98,44 @@ export default {
         } catch (error) {
           response = Response.json({ error: "Yennefer orchestration failed", message: String(error) }, { status: 503 });
         }
+      } else if (pathname === "/api/agent/state") {
+        // Proxy agent state API to orchestrator
+        const YENNEFER_API = env.YENNEFER_API_URL || "http://localhost:8080";
+        try {
+          const proxyResponse = await fetch(`${YENNEFER_API}/api/agent/state`, {
+            headers: {
+              "Authorization": env.GATEWAY_SECRET ? `Bearer ${env.GATEWAY_SECRET}` : "",
+            },
+          });
+          response = new Response(await proxyResponse.text(), {
+            status: proxyResponse.status,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Cache-Control": "no-cache",
+            },
+          });
+        } catch (error) {
+          response = Response.json({ 
+            error: "Agent state unavailable", 
+            message: String(error) 
+          }, { status: 503 });
+        }
+      } else if (pathname === "/ws/agent-state") {
+        // WebSocket upgrade for agent state
+        // Note: CF Workers WebSocket support requires special handling
+        // For production, use Cloudflare Tunnel at api.yennefer.quest
+        const upgradeHeader = request.headers.get("Upgrade");
+        if (upgradeHeader !== "websocket") {
+          return new Response("Expected Upgrade: websocket", { status: 426 });
+        }
+        
+        // Return instructions for direct tunnel connection
+        response = Response.json({
+          error: "WebSocket proxying not supported through Worker",
+          message: "For WebSocket connections, connect directly to wss://api.yennefer.quest/ws/agent-state (via Cloudflare Tunnel)",
+          fallback: "Use REST API at /api/agent/state for polling",
+        }, { status: 501 });
       } else if (pathname === "/healthz" || pathname === "/health") {
         // Basic bot protection for health endpoint
         const botBlock = await checkAndBlockBot(request, "basic");

@@ -1,0 +1,72 @@
+# Yennefer: Thermodynamic AI Consciousness
+
+> Real-time GPU-powered consciousness interface with Resource Hamiltonian orchestration
+
+## Overview
+
+Yennefer is a thermodynamic AI agent that visualizes and orchestrates computational resources through a consciousness-inspired interface. Built on quantum-inspired QUBO optimization and Claude Opus 4.7 reasoning.
+
+## Identity
+
+- Name: Yennefer
+- Type: Thermodynamic AI Orchestrator
+- Domain: https://yennefer.quest
+- API: https://api.yennefer.quest
+- Status: Production (2026-05-20)
+
+## Core Concepts
+
+### Resource Hamiltonian
+H(s) = (VRAM_Used / VRAM_Total) × 10
+
+States:
+- OPTIMAL (0-5.0): Normal operations
+- DYNAMIC (5.0-7.5): Elevated activity
+- SEQUENTIAL (7.5-8.5): High load
+- OFFLOAD (>8.5): Trigger soul-capsule offload
+
+## Public Endpoints
+
+### Web Interface
+- Homepage: https://yennefer.quest/
+- Dashboard: https://yennefer.quest/dashboard
+- About: https://yennefer.quest/about
+
+### API Endpoints
+- GET /api/health — Health check
+- GET /api/agent/state — Agent state (status, metrics, connections)
+- GET /api/vram — GPU VRAM metrics
+- GET /ws/agent-state — WebSocket streaming
+
+### Discovery
+- GET /.well-known/agent.json — Agent identity
+- GET /.well-known/ai-plugin.json — Plugin spec
+- GET /llms.txt — This file
+- GET /sitemap.xml — Site map
+
+## Features
+
+- Real-time GPU telemetry visualization
+- WebSocket streaming (heartbeat 5s, updates 10s)
+- Resource Hamiltonian state machine
+- Connection monitoring (Gateway, Claude, EnKG)
+
+## Technology Stack
+
+Backend: FastAPI, WebSockets, Claude SDK 0.103.1, Google ADK 2.0.0, CUDA-Q
+Frontend: Three.js, Vanilla JS, WebSocket client
+Infrastructure: Cloudflare Workers, Tunnel, NVIDIA GTX 1650
+
+## Integration Example
+
+curl -s https://api.yennefer.quest/api/health | jq .
+
+## Rate Limits
+
+- /api/agent/state: 30/min per IP
+- /api/vram: 20/min per IP
+- WebSocket: 1 connection per IP
+
+## Tags
+
+#ai #consciousness #thermodynamics #gpu #real-time #claude #quantum #orchestration #visualization #dashboard #hamiltonian #mcp #agent-discovery

@@ -228,6 +228,114 @@ export const YENNEFER_DASHBOARD_HTML = `<!DOCTYPE html>
         .back-link:hover {
             color: #e74c3c;
         }
+        
+        /* Agent State UI Additions */
+        .agent-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .agent-status-container {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-badge.idle { background: #2ecc71; color: white; }
+        .status-badge.thinking { background: #3498db; color: white; }
+        .status-badge.executing { background: #9b59b6; color: white; }
+        .status-badge.active { background: #f39c12; color: white; }
+        
+        .status-activity {
+            color: #b8a3d4;
+            font-size: 1.1rem;
+        }
+        
+        .connections-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .connection-indicator.connected { 
+            background: #2ecc71; 
+            animation: pulse 2s infinite; 
+        }
+        .connection-indicator.disconnected { background: #e74c3c; }
+        
+        .actions-timeline {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .action-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #9b59b6;
+            border-radius: 4px;
+        }
+        
+        .action-timestamp {
+            color: #b8a3d4;
+            font-size: 0.85rem;
+        }
+        
+        .action-result.success { color: #2ecc71; }
+        .action-result.error { color: #e74c3c; }
+        
+        .live-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .live-metric {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .live-metric-label {
+            font-size: 0.75rem;
+            color: #b8a3d4;
+            margin-bottom: 5px;
+        }
+        
+        .live-metric-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #9b59b6;
+        }
     </style>
 </head>
 <body>
@@ -293,6 +401,57 @@ export const YENNEFER_DASHBOARD_HTML = `<!DOCTYPE html>
             </div>
         </div>
         
+        <div class="agent-section">
+            <div class="card">
+                <div class="card-title">🤖 Agent Status</div>
+                <div class="agent-status-container">
+                    <div class="status-badge idle" id="agentStatus">IDLE</div>
+                    <div class="status-activity" id="agentActivity">Waiting for commands...</div>
+                </div>
+                <div class="live-metrics-grid">
+                    <div class="live-metric">
+                        <div class="live-metric-label">Total Cycles</div>
+                        <div class="live-metric-value" id="totalCycles">0</div>
+                    </div>
+                    <div class="live-metric">
+                        <div class="live-metric-label">Uptime</div>
+                        <div class="live-metric-value" id="agentUptime">0h 0m</div>
+                    </div>
+                    <div class="live-metric">
+                        <div class="live-metric-label">Avg Exec Time</div>
+                        <div class="live-metric-value" id="avgExecTime">0ms</div>
+                    </div>
+                    <div class="live-metric">
+                        <div class="live-metric-label">Success Rate</div>
+                        <div class="live-metric-value" id="successRate">100%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📊 Live Connections</div>
+                <div class="connections-grid">
+                    <div class="connection-item">
+                        <span class="connection-indicator disconnected" id="gatewayStatus"></span>
+                        <span>Gateway</span>
+                    </div>
+                    <div class="connection-item">
+                        <span class="connection-indicator disconnected" id="claudeStatus"></span>
+                        <span>Claude API</span>
+                    </div>
+                    <div class="connection-item">
+                        <span class="connection-indicator disconnected" id="enkgStatus"></span>
+                        <span>EnKG Kernel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">⚡ Recent Actions</div>
+            <div id="recentActions" class="actions-timeline"></div>
+        </div>
+        
         <div class="controls">
             <button id="runOrchestration">🚀 Run Orchestration Cycle</button>
             <button id="refreshMetrics">🔄 Refresh Metrics</button>
@@ -315,6 +474,11 @@ export const YENNEFER_DASHBOARD_HTML = `<!DOCTYPE html>
         const statusDotEl = document.getElementById('statusDot');
         
         let isConnected = false;
+        let agentWS = null;
+        let agentStartTime = Date.now();
+        let totalCycles = 0;
+        let successfulCycles = 0;
+        let totalExecTime = 0;
         
         function addLog(message, type = 'info') {
             const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
@@ -424,6 +588,240 @@ export const YENNEFER_DASHBOARD_HTML = `<!DOCTYPE html>
             log.innerHTML = '';
             addLog('Log cleared');
         });
+        
+        // WebSocket for real-time agent state
+        function connectAgentWebSocket() {
+            // Determine WebSocket URL based on environment
+            let wsUrl;
+            if (window.location.hostname.includes('yennefer.quest')) {
+                // Production: Use Cloudflare Tunnel endpoint directly
+                wsUrl = 'wss://api.yennefer.quest/ws/agent-state';
+            } else {
+                // Development: Connect to same origin
+                const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                wsUrl = \`\${wsProtocol}//\${window.location.host}/ws/agent-state\`;
+            }
+            
+            agentWS = new WebSocket(wsUrl);
+            
+            agentWS.onopen = () => {
+                addLog('🔗 Connected to agent state stream');
+                updateAgentStatus('idle');
+            };
+            
+            agentWS.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    handleAgentStateUpdate(message);
+                } catch (e) {
+                    addLog(\`⚠ Failed to parse agent state message: \${e.message}\`, 'warning');
+                }
+            };
+            
+            agentWS.onerror = () => {
+                addLog('✗ Agent state WebSocket error', 'error');
+            };
+            
+            agentWS.onclose = () => {
+                addLog('⚠ Agent state connection closed, reconnecting...', 'warning');
+                updateAgentStatus('idle');
+                setTimeout(connectAgentWebSocket, 5000);
+            };
+        }
+        
+        function handleAgentStateUpdate(message) {
+            const { type, data, timestamp } = message;
+            
+            if (type === 'state_update') {
+                updateAgentStatus(data.status);
+                updateAgentActivity(data.activity || 'Idle');
+                if (data.connections) {
+                    updateConnections(data.connections);
+                }
+            } else if (type === 'activity') {
+                updateAgentActivity(data.activity);
+            } else if (type === 'action') {
+                addRecentAction(data);
+            } else if (type === 'metrics') {
+                updateLiveMetrics(data);
+            }
+        }
+        
+        function updateAgentStatus(status) {
+            const badge = document.getElementById('agentStatus');
+            badge.textContent = status.toUpperCase();
+            badge.className = \`status-badge \${status}\`;
+        }
+        
+        function updateAgentActivity(activity) {
+            document.getElementById('agentActivity').textContent = activity;
+        }
+        
+        function updateConnections(connections) {
+            document.getElementById('gatewayStatus').className = 
+                \`connection-indicator \${connections.gateway || 'disconnected'}\`;
+            document.getElementById('claudeStatus').className = 
+                \`connection-indicator \${connections.claude || 'disconnected'}\`;
+            document.getElementById('enkgStatus').className = 
+                \`connection-indicator \${connections.enkg_kernel || 'disconnected'}\`;
+        }
+        
+        function addRecentAction(action) {
+            const container = document.getElementById('recentActions');
+            const item = document.createElement('div');
+            item.className = 'action-item';
+            
+            const actionTime = action.timestamp ? new Date(action.timestamp) : new Date();
+            item.innerHTML = \`
+                <div class="action-timestamp">\${actionTime.toLocaleTimeString()}</div>
+                <div>\${action.action}</div>
+                <div class="action-result \${action.result}">\${action.details}</div>
+            \`;
+            container.insertBefore(item, container.firstChild);
+            
+            // Keep only last 5 actions
+            while (container.children.length > 5) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        function updateLiveMetrics(data) {
+            if (data.total_cycles !== undefined) {
+                document.getElementById('totalCycles').textContent = data.total_cycles;
+            }
+            if (data.avg_exec_time !== undefined) {
+                document.getElementById('avgExecTime').textContent = \`\${data.avg_exec_time.toFixed(0)}ms\`;
+            }
+            if (data.success_rate !== undefined) {
+                document.getElementById('successRate').textContent = \`\${data.success_rate.toFixed(0)}%\`;
+            }
+        }
+        
+        function updateUptime() {
+            const uptimeMs = Date.now() - agentStartTime;
+            const hours = Math.floor(uptimeMs / 3600000);
+            const minutes = Math.floor((uptimeMs % 3600000) / 60000);
+            document.getElementById('agentUptime').textContent = \`\${hours}h \${minutes}m\`;
+        }
+        
+        // Enhanced orchestration tracking
+        async function runOrchestrationEnhanced() {
+            const button = document.getElementById('runOrchestration');
+            button.disabled = true;
+            button.textContent = '⏳ Running...';
+            
+            updateAgentStatus('executing');
+            updateAgentActivity('Running orchestration cycle...');
+            
+            const startTime = Date.now();
+            
+            try {
+                addLog('🚀 Starting orchestration cycle...');
+                
+                const response = await fetch(\`\${API_BASE}/api/yennefer/orchestrate\`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kappa: 0.7,
+                        gamma: 0.3,
+                        vector_size: 1024
+                    })
+                });
+                
+                if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+                
+                const result = await response.json();
+                const execTime = Date.now() - startTime;
+                
+                // Update validation state
+                document.getElementById('validationState').textContent = result.validation_state;
+                document.getElementById('execTime').textContent = \`\${result.execution_time_ms.toFixed(1)}ms\`;
+                
+                // Track metrics
+                totalCycles++;
+                successfulCycles++;
+                totalExecTime += execTime;
+                
+                // Update live metrics
+                updateLiveMetrics({
+                    total_cycles: totalCycles,
+                    avg_exec_time: totalExecTime / totalCycles,
+                    success_rate: (successfulCycles / totalCycles) * 100
+                });
+                
+                // Add to recent actions
+                addRecentAction({
+                    action: 'Orchestration Cycle',
+                    result: 'success',
+                    details: \`Completed in \${execTime}ms - \${result.validation_state}\`,
+                    timestamp: new Date().toISOString()
+                });
+                
+                addLog(\`✓ Orchestration complete: \${result.validation_state} in \${result.execution_time_ms.toFixed(1)}ms\`);
+                addLog(\`  EnKG: μ=\${result.enkg_output_stats.mean.toFixed(4)}, σ=\${result.enkg_output_stats.std.toFixed(4)}\`);
+                addLog(\`  Telemetry: H=\${result.telemetry.hamiltonian.toFixed(2)}, Action=\${result.telemetry.gateway_action}\`);
+                
+                updateAgentStatus('idle');
+                updateAgentActivity('Cycle completed successfully');
+                
+                // Check connections based on result
+                updateConnections({
+                    gateway: 'connected',
+                    claude: result.validation_state !== 'NULL' ? 'connected' : 'disconnected',
+                    enkg_kernel: result.enkg_output_stats ? 'connected' : 'disconnected'
+                });
+                
+                // Refresh metrics after orchestration
+                await fetchMetrics();
+            } catch (error) {
+                totalCycles++;
+                
+                addLog(\`✗ Orchestration failed: \${error.message}\`, 'error');
+                
+                addRecentAction({
+                    action: 'Orchestration Cycle',
+                    result: 'error',
+                    details: error.message,
+                    timestamp: new Date().toISOString()
+                });
+                
+                updateAgentStatus('idle');
+                updateAgentActivity('Error: ' + error.message);
+                
+                // Update metrics even on failure
+                updateLiveMetrics({
+                    total_cycles: totalCycles,
+                    avg_exec_time: totalExecTime / Math.max(successfulCycles, 1),
+                    success_rate: (successfulCycles / totalCycles) * 100
+                });
+            } finally {
+                button.disabled = false;
+                button.textContent = '🚀 Run Orchestration Cycle';
+            }
+        }
+        
+        // Event listeners (updated)
+        document.getElementById('runOrchestration').removeEventListener('click', runOrchestration);
+        document.getElementById('runOrchestration').addEventListener('click', runOrchestrationEnhanced);
+        document.getElementById('refreshMetrics').addEventListener('click', fetchMetrics);
+        document.getElementById('clearLog').addEventListener('click', () => {
+            log.innerHTML = '';
+            addLog('Log cleared');
+        });
+        
+        // Initialize agent state
+        updateConnections({
+            gateway: 'disconnected',
+            claude: 'disconnected',
+            enkg_kernel: 'disconnected'
+        });
+        
+        // Start WebSocket connection (will gracefully fail if endpoint not available)
+        connectAgentWebSocket();
+        
+        // Update uptime every minute
+        setInterval(updateUptime, 60000);
+        updateUptime();
         
         // Initial load and auto-refresh
         fetchMetrics();

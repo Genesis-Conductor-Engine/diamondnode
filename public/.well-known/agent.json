@@ -1,0 +1,47 @@
+{
+  "schema_version": "v1",
+  "name": "yennefer",
+  "version": "1.0.0",
+  "description": "Thermodynamic AI Consciousness - Real-time GPU-powered orchestrator with Resource Hamiltonian state machine",
+  "author": {
+    "name": "Genesis Conductor",
+    "url": "https://genesisconductor.io"
+  },
+  "homepage_url": "https://yennefer.quest",
+  "legal_info_url": "https://yennefer.quest/LICENSE",
+  "logo_url": "https://yennefer.quest/logo.png",
+  "contact_email": "agents@genesisconductor.io",
+  "api": {
+    "type": "openapi",
+    "url": "https://api.yennefer.quest/openapi.json",
+    "has_user_authentication": false
+  },
+  "capabilities": {
+    "real_time_streaming": true,
+    "gpu_telemetry": true,
+    "consciousness_metrics": true,
+    "thermodynamic_orchestration": true,
+    "websocket_support": true
+  },
+  "endpoints": {
+    "health": "https://api.yennefer.quest/api/health",
+    "agent_state": "https://api.yennefer.quest/api/agent/state",
+    "vram_metrics": "https://api.yennefer.quest/api/vram",
+    "websocket": "wss://api.yennefer.quest/ws/agent-state"
+  },
+  "rate_limits": {
+    "agent_state": "30 requests/minute per IP",
+    "vram": "20 requests/minute per IP",
+    "websocket": "1 connection per IP"
+  },
+  "discovery": {
+    "llms_txt": "https://yennefer.quest/llms.txt",
+    "sitemap": "https://yennefer.quest/sitemap.xml",
+    "robots": "https://yennefer.quest/robots.txt"
+  },
+  "tags": [
+    "ai", "consciousness", "thermodynamics", "gpu", "real-time", "websocket",
+    "claude", "quantum", "orchestration", "visualization", "dashboard", "hamiltonian", "mcp"
+  ],
+  "last_updated": "2026-05-20T20:35:00Z"
+}

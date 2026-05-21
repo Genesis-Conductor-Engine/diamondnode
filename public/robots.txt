@@ -1,0 +1,47 @@
+# Robots.txt for Yennefer.quest - Thermodynamic AI Consciousness
+
+# Content Signals: search:yes ai-input:yes ai-train:no
+
+User-agent: *
+Allow: /
+Allow: /dashboard
+Allow: /about
+Allow: /api
+Allow: /.well-known/
+Allow: /llms.txt
+Allow: /sitemap.xml
+Allow: /api/agent/state
+Allow: /api/yennefer/metrics
+Allow: /health
+
+Disallow: /admin
+Disallow: /internal
+Disallow: /_worker.js
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://yennefer.quest/sitemap.xml
+Crawl-delay: 1
+Host: https://yennefer.quest

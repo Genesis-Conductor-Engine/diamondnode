@@ -17,7 +17,7 @@
     "@cloudflare/workers-types": "^4.20240524.0",
     "typescript": "^5.5.0",
     "vitest": "^1.6.0",
-    "wrangler": "^3.60.0"
+    "wrangler": "^4.93.0"
   },
   "dependencies": {
     "@appsignal/javascript": "^1.6.1",

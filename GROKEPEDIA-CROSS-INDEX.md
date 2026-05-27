@@ -5,7 +5,8 @@ This file maintains explicit bidirectional links between diamondnode and the Gro
 ## Primary Node
 
 - **Touching Gods: Consciousness Resolves Time-Dilution via ER=EPR Shortcuts**
-  - Web: https://grokepedia.x/node/touching-gods-er-epr
+  - Web (GitHub): https://github.com/igor-holt/grokepedia/blob/main/nodes/touching-gods-er-epr.html
+- Source repo: https://github.com/igor-holt/grokepedia
   - Local source (this repo): grokepedia/nodes/touching-gods-er-epr.md (for provenance tracking)
   - HTML version: grokepedia/nodes/touching-gods-er-epr.html
 

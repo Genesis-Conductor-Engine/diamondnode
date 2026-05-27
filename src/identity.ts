@@ -1,4 +1,4 @@
-import type { AuditEvent, Env } from "./types.js";
+import type { AuditEvent, Env, RadixAttentionClaim } from "./types.js";
 
 export async function importPrivKey(b64: string): Promise<CryptoKey> {
   const raw = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
@@ -12,7 +12,7 @@ export async function signEvent(
   const key = await importPrivKey(privKeyB64);
   const payload = new TextEncoder().encode(JSON.stringify(event));
   const sig = await crypto.subtle.sign("Ed25519", key, payload);
-  return { ...event, sig: btoa(String.fromCharCode(...new Uint8Array(sig))) };
+  return { ...event, sig: btoa(String.fromCharCode(...new Uint8Array(sig)))};
 }
 
 export function makeEvent(
@@ -42,4 +42,24 @@ export async function emitToVault(
       body: JSON.stringify(event),
     }).catch(() => {}),
   );
+}
+
+// v0.3: Sign a RadixAttention coherence root claim for a revenue prefix
+export async function signRadixClaim(
+  claim: Omit<RadixAttentionClaim, "sig">,
+  privKeyB64: string,
+): Promise<RadixAttentionClaim> {
+  const key = await importPrivKey(privKeyB64);
+  const payload = new TextEncoder().encode(JSON.stringify({
+    prefix_id: claim.prefix_id,
+    root_hash: claim.root_hash,
+    uq_version: claim.uq_version,
+    uq_value: claim.uq_value,
+    ts: claim.ts,
+  }));
+  const sig = await crypto.subtle.sign("Ed25519", key, payload);
+  return {
+    ...claim,
+    sig: btoa(String.fromCharCode(...new Uint8Array(sig))),
+  };
 }

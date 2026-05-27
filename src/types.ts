@@ -5,17 +5,6 @@ export interface Env {
   DIAMOND_VAULT_AUDIT_URL: string;   // upstream audit endpoint (optional)
   APPSIGNAL_KEY?: string;            // AppSignal API key (optional, for monitoring)
 
-  // Notion AI Worker Configuration
-  NOTION_TOKEN?: string;              // Notion integration token (optional)
-  NOTION_DATABASE_ID?: string;        // Notion database ID (default: 21e416066ef1411084d1bbaf67af79d1)
-  GATEWAY_AUTH_SECRET?: string;       // Gateway authentication secret (optional)
-  GATEWAY_SECRET?: string;            // Gateway secret for orchestrator auth (optional)
-  CUDA_Q_OPTIMIZED?: string;          // CUDA-Q optimization flag (default: "true")
-  GTX1650_MODE?: string;              // GTX 1650 mode flag (default: "true")
-  QUADRATIC_EMBEDDING?: string;       // Quadratic embedding flag (default: "true")
-  QFLOP_THROUGHPUT?: string;          // QFlop throughput mode (default: "max")
-  YENNEFER_API_URL?: string;          // Yennefer orchestrator API URL (default: http://localhost:8080)
-
   // Vars — set in wrangler.toml [vars]
   NODE_VERSION: string;
   NODE_ID: string;
@@ -36,4 +25,32 @@ export interface HealthResponse {
   version: string;
   identity_pubkey: string;
   ts: string;
+}
+
+export interface RadixAttentionClaim {
+  prefix_id: string;           // rev:01:wrap_fees etc.
+  root_hash: string;           // current RadixAttention root for this prefix
+  uq_version: number;
+  uq_value: number;
+  ts: string;
+  sig: string;                 // Ed25519 over the above (verifiable)
+}
+
+export interface DiamondNodeManifest {
+  node_id: string;
+  deploy_url: string;
+  repo: string;
+  key_id: string;
+  identity_pubkey: string;
+  version: string;
+  ts: string;
+  monitoring?: string;
+  // v0.3: verifiable RadixAttention coherence roots (signed claims)
+  radix_attention_claims?: RadixAttentionClaim[];
+  latest_power_tower?: {
+    decision: string;
+    energy: number;
+    elapsed_ms: number;
+    ts: string;
+  };
 }

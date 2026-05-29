@@ -1,0 +1,66 @@
+{
+  "$schema": "https://www.schemastore.org/schemas/json/claude-code-marketplace.json",
+  "name": "genesis-conductor-diamondnode",
+  "owner": {
+    "name": "Igor Holt (@invariantx) / Genesis Conductor Engine",
+    "email": "iholt@mymail.aacc.edu",
+    "url": "https://github.com/Genesis-Conductor-Engine"
+  },
+  "description": "Genesis Conductor Diamond Node (diamondnode) — self-hosted audit-node, QUBO simulation engine, and Cloudflare Worker identity layer by Igor Holt (@invariantx). Runs mycelial hyphal-network growth optimizer on NVIDIA GTX 1650 using CUDA-Q QAOA for advanced thermodynamic/topological optimization. Exposes signed audit event streams, Ed25519 identity (dn-2026-05), and rich Notion proxy endpoints (offload, embed, query, search) as part of the official GC 7-Agent Topology. Features BotID-powered bot protection, mcp-config.json for MCP integration, comprehensive benchmarks, LLM interpretation via Ollama, double-loopback resilient QUBO solving with state checkpoints, and explicit claw-handoff automation for OpenClaw agents. Live at https://dn.genesisconductor.io. Critical infrastructure for Genesis Conductor thermodynamic verification, A2A coordination, autonomous agent orchestration, and production MCP/self-hosted AI workloads. Complements the OpenClaw skills bundle and Yennefer Cortex surfaces.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Genesis-Conductor-Engine/diamondnode",
+  "keywords": [
+    "genesis-conductor",
+    "igor-holt",
+    "invariantx",
+    "diamondnode",
+    "gtx-1650",
+    "cuda-q",
+    "qubo",
+    "qaqa",
+    "mycelial-hyphal-network",
+    "audit-node",
+    "signed-audit-stream",
+    "7-agent-topology",
+    "cloudflare-worker",
+    "ed25519-identity",
+    "notion-proxy",
+    "botid-protection",
+    "claw-handoff",
+    "mcp-config",
+    "thermodynamic-verification",
+    "openclaw",
+    "self-hosted-mcp",
+    "a2a-coordination"
+  ],
+  "plugins": [
+    {
+      "name": "diamondnode-core",
+      "source": "https://github.com/Genesis-Conductor-Engine/diamondnode",
+      "description": "Core diamond-node audit and simulation engine: GTX 1650 + CUDA-Q QAOA QUBO optimizer for mycelial hyphal growth modeling, signed audit replay, Ed25519 identity layer, Cloudflare Worker deployment, and deep Notion integration. Includes resilient state persistence, LLM interpretation (Ollama llama3.2), full benchmark suite, and automation hooks for OpenClaw claw-handoff. Published with mcp-config.json for MCP agent exposure. Essential Genesis Conductor thermodynamic and topological infrastructure.",
+      "version": "1.0.0",
+      "tags": ["audit", "qubo", "cuda-q", "gtx1650", "simulation", "mcp", "genesis-conductor", "openclaw"],
+      "category": "infrastructure",
+      "homepage": "https://github.com/Genesis-Conductor-Engine/diamondnode",
+      "keywords": ["diamondnode GTX 1650", "CUDA-Q QAOA QUBO", "mycelial optimizer", "signed audit events", "GC 7-Agent Topology", "claw-handoff automation"]
+    },
+    {
+      "name": "diamondnode-mcp-integration",
+      "source": "https://github.com/Genesis-Conductor-Engine/diamondnode/blob/main/mcp-config.json",
+      "description": "MCP server configuration and verification fleet tools (mcp-config.json + mcp-verify-fleet.sh) exposing diamondnode capabilities (audit, Notion proxy, health, identity) to autonomous agents. Designed for bridging via mcp-openclaw-bridge into the professional OpenClaw / ClawHub stack alongside grok-persistent-state and smithery-mcp-orchestrator.",
+      "version": "1.0.0",
+      "tags": ["mcp", "integration", "audit", "notion-proxy", "genesis-conductor"],
+      "category": "mcp-tools",
+      "homepage": "https://github.com/Genesis-Conductor-Engine/diamondnode",
+      "keywords": ["diamondnode mcp-config", "MCP audit node", "self-hosted MCP server", "agent state proxy"]
+    }
+  ],
+  "links": {
+    "x": "https://x.com/invariantx",
+    "live": "https://dn.genesisconductor.io",
+    "website": "https://genesisconductor.io",
+    "openclaw-skills": "https://github.com/igor-holt/openclaw-skills",
+    "7-agent-topology": "https://www.notion.so/33e98ee3e91e81ebac98fa48b7874283",
+    "claude-md": "https://github.com/Genesis-Conductor-Engine/diamondnode/blob/main/CLAUDE.md"
+  }
+}

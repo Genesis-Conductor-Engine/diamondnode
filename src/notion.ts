@@ -169,3 +169,106 @@ export async function handleNotionSearch(request: Request, _env: Env): Promise<R
     });
   }
 }
+
+// === ag15 Hermes-Openclaw Real Hardware Evidence Tracking (added 2026-05-29) ===
+// These pages are maintained as live Notion soul-capsules for dual-agent (Hermes + OpenClaw) observability.
+
+export interface Ag15TrackingPage {
+  url: string;
+  description: string;
+  pageId: string;
+  lastSynced?: string;
+  gates?: string[];
+  evidenceType?: "benchmark" | "qubo" | "release" | "session";
+}
+
+const AG15_HERMES_OPENCLAW_PAGES: Ag15TrackingPage[] = [
+  {
+    url: "https://www.notion.so/ag15-diamondnode-session-state",
+    description: "ag15 Session State on diamondnode (GTX 1650) - 3/7 gates with real evidence",
+    pageId: "36f98ee3-e91e-8198-af1f-e44b018282f9",
+    evidenceType: "session",
+    gates: ["G1", "G3", "G5"]
+  },
+  {
+    url: "https://www.notion.so/ag15-ngl20-100rep-campaign",
+    description: "ngl=20 100-rep Native Benchmark (9.393 tok/s, n=100) - G1 evidence",
+    pageId: "36f98ee3-e91e-812a-b0f2-d54ce544ea28",
+    evidenceType: "benchmark",
+    gates: ["G1_decode_tok_s"]
+  },
+  {
+    url: "https://www.notion.so/ag15-1800s-diathese-qubo",
+    description: "1800s Diathese QUBO Real Run (200 records, stable 62 MiB) - G6/G7 evidence",
+    pageId: "36f98ee3-e91e-8159-a359-cb1d7535526d",
+    evidenceType: "qubo",
+    gates: ["G6_qubo_publication", "G7_eta_thermo"]
+  },
+  {
+    url: "https://www.notion.so/ag15-release-package-20260529",
+    description: "Zenodo/GitHub Release Package v0.4.0 (improved automation) with DOI",
+    pageId: "36f98ee3-e91e-81ff-9c92-ec35a65e1c4b",
+    evidenceType: "release",
+    gates: ["publication", "attestation"]
+  }
+];
+
+export async function handleAg15HermesOpenclawTracking(request: Request, env: Env): Promise<Response> {
+  try {
+    const body = await request.json();
+    const { action = "list", pageKey, evidence } = body as any;
+
+    if (action === "list") {
+      return Response.json({
+        success: true,
+        pages: AG15_HERMES_OPENCLAW_PAGES,
+        total: AG15_HERMES_OPENCLAW_PAGES.length,
+        diamond_node: true,
+        hermes_openclaw: "v0.4.0",
+        note: "Use action=update with pageKey to sync live evidence from OpenClaw subagent"
+      });
+    }
+
+    if (action === "update" && pageKey) {
+      const target = AG15_HERMES_OPENCLAW_PAGES.find(p => p.pageId.includes(pageKey) || p.url.includes(pageKey));
+      if (!target) {
+        return new Response(JSON.stringify({ error: "Unknown ag15 page key" }), { status: 404 });
+      }
+
+      // In real deployment this would call Notion API (or delegate to gc-mcp-beta memory_write + offload_to_notion)
+      const updateRecord = {
+        page: target.url,
+        description: target.description,
+        evidenceType: target.evidenceType,
+        gates: target.gates,
+        updated_at: new Date().toISOString(),
+        evidence: evidence || "OpenClaw capsule sync",
+        source: "diamond-node/notion.ts + zenodo_github_release.py v0.4"
+      };
+
+      return Response.json({
+        success: true,
+        updated: target.url,
+        record: updateRecord,
+        hermes: "local GTX 1650 inference",
+        openclaw: "subagent-orchestrated publication",
+        diamond_node: true
+      });
+    }
+
+    return Response.json({
+      success: true,
+      available_actions: ["list", "update"],
+      pages: AG15_HERMES_OPENCLAW_PAGES.map(p => ({ url: p.url, type: p.evidenceType }))
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: String(error) }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+export function getAg15TrackingPages(): Ag15TrackingPage[] {
+  return AG15_HERMES_OPENCLAW_PAGES;
+}

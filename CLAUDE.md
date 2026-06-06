@@ -68,3 +68,5 @@ Five benchmarks (`gpu_telemetry`, `cudaq_probe`, `qubo_iteration`, `state_persis
 **LLM interpretation — `llm_interpret.py`**
 
 Reads `state/mycelial_state.json`, builds a one-sentence summary (node count, active edges, best energy, trend, resource nodes, iteration), and sends it to `ollama run llama3.2:3b` asking for a 3–4 sentence assessment and a single parameter-change recommendation. Output appended as JSONL to `logs/llm-interpretations.jsonl`.
+
+**Arena integration cross-ref (gc-arena-controller + OFFLOAD):** High-value Ouroboros matches (from gc-arena-controller 5-phase FSM on shared D1) can participate in the H(s) > 8.5 OFFLOAD → notion-bridge soul-capsule (DB 21e41606...) → diamondvault → gc-mcp propagation story via the live `/v1/arena/matches/:id/offload` (or future gc-mcp-beta arena tools). See top ~/AGENTS.md "Arena + Conductor Soul-Capsule Integration", gc-arena-controller/README.md, and Task 4. Arena matches provide richer context (phase history, strategy, bench_trace, demand_score) than raw VRAM telemetry.

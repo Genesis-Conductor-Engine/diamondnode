@@ -4,6 +4,7 @@ import { handleAuditReplay } from "./audit.js";
 import { initializeAppSignal, trackRequest, trackError } from "./appsignal.js";
 import { makeEvent, signEvent, signRadixClaim } from "./identity.js";
 import { appendAudit } from "./audit.js";
+import { arbitratePowerTower } from "./power-tower.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -44,20 +45,15 @@ export default {
         };
         response = Response.json(manifest);
 
-      // v0.3: Live power-tower arbitration (<8ms via mycelial CUDA-Q)
+      // v0.3.1: Deterministic power-tower arbitration (ported from unified_inference/optimizer.py).
+      // Caller telemetry is captured under inputs/telemetry_used, never spread into the
+      // signed decision — the attestation covers only node-computed values.
       } else if (pathname === "/uq/power_tower" && request.method === "POST") {
-        const body = await request.json() as any;
-        const decision = {
-          decision: body.guardian_r > 0.4 ? "veto" : "promote",
-          energy: -0.87 + (body.revenue_impact || 0) * 0.3,
-          elapsed_ms: 3.8 + Math.random() * 1.2,
-          within_target: true,
-          reason: body.guardian_r > 0.4 ? "maru_guardian" : "power_tower_qubo",
-          ...body,
-        };
+        const body = await request.json();
+        const decision = arbitratePowerTower(body);
         latestPowerTower = { decision: decision.decision, energy: decision.energy, elapsed_ms: decision.elapsed_ms, ts: new Date().toISOString() };
 
-        const event = makeEvent("UQ_POWER_TOWER", decision, env);
+        const event = makeEvent("UQ_POWER_TOWER", { ...decision }, env);
         const signed = env.DIAMOND_NODE_ED25519_PRIV
           ? await signEvent(event, env.DIAMOND_NODE_ED25519_PRIV)
           : { ...event, sig: "unsigned-dev" };

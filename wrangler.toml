@@ -7,6 +7,8 @@ compatibility_flags = ["nodejs_compat"]
 NODE_VERSION = "0.1.0"
 NODE_ID = "diamond-node"
 KEY_ID = "dn-2026-05"
+# Cortex feed source — override to point at a private feed if needed
+CORTEX_FEED_URL = "https://raw.githubusercontent.com/Genesis-Conductor-Engine/cortex-feed/main/feed.jsonl"
 
 [[routes]]
 pattern = "dn.genesisconductor.io/*"

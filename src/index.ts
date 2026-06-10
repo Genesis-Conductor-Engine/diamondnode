@@ -4,6 +4,7 @@ import { handleAuditReplay } from "./audit.js";
 import { initializeAppSignal, trackRequest, trackError } from "./appsignal.js";
 import { makeEvent, signEvent, signRadixClaim } from "./identity.js";
 import { appendAudit } from "./audit.js";
+import { handleSystemStatus } from "./cortex.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -18,19 +19,37 @@ let latestPowerTower: any = null;
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const startTime = Date.now();
-    const { pathname } = new URL(request.url);
+    const { pathname, method } = new URL(request.url);
 
     const appsignal = env.APPSIGNAL_KEY
       ? initializeAppSignal(env.APPSIGNAL_KEY, env.NODE_VERSION)
       : null;
+
+    // Handle CORS preflight for all routes
+    if (method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      });
+    }
 
     try {
       let response: Response;
 
       if (pathname === "/healthz" || pathname === "/health") {
         response = await handleHealth(request, env, ctx);
+
+      } else if (pathname === "/api/system-status" && method === "GET") {
+        // Live cortex feed aggregation — powers Yennefer Cortex dashboard
+        response = await handleSystemStatus(request, env, ctx);
+
       } else if (pathname === "/audit/replay") {
         response = await handleAuditReplay(request);
+
       } else if (pathname === "/.well-known/diamond-node.json") {
         const manifest: DiamondNodeManifest = {
           ...WELL_KNOWN_TEMPLATE,
@@ -45,7 +64,7 @@ export default {
         response = Response.json(manifest);
 
       // v0.3: Live power-tower arbitration (<8ms via mycelial CUDA-Q)
-      } else if (pathname === "/uq/power_tower" && request.method === "POST") {
+      } else if (pathname === "/uq/power_tower" && method === "POST") {
         const body = await request.json() as any;
         const decision = {
           decision: body.guardian_r > 0.4 ? "veto" : "promote",
@@ -55,7 +74,12 @@ export default {
           reason: body.guardian_r > 0.4 ? "maru_guardian" : "power_tower_qubo",
           ...body,
         };
-        latestPowerTower = { decision: decision.decision, energy: decision.energy, elapsed_ms: decision.elapsed_ms, ts: new Date().toISOString() };
+        latestPowerTower = {
+          decision: decision.decision,
+          energy: decision.energy,
+          elapsed_ms: decision.elapsed_ms,
+          ts: new Date().toISOString(),
+        };
 
         const event = makeEvent("UQ_POWER_TOWER", decision, env);
         const signed = env.DIAMOND_NODE_ED25519_PRIV
@@ -66,7 +90,7 @@ export default {
         response = Response.json({ ok: true, result: decision, attest: signed });
 
       // v0.3: Accept + sign RadixAttention claims from gc-dynamic-uq-service
-      } else if (pathname === "/uq/radix_claims" && request.method === "POST") {
+      } else if (pathname === "/uq/radix_claims" && method === "POST") {
         const body = await request.json() as { claims: any[]; uq_version: number; uq_value: number };
         if (!env.DIAMOND_NODE_ED25519_PRIV) {
           response = Response.json({ error: "no_priv_key" }, { status: 500 });
@@ -99,7 +123,7 @@ export default {
       }
       return response;
     } catch (error) {
-      if (appsignal) trackError(appsignal, error as Error, { method: request.method, path: pathname, url: request.url });
+      if (appsignal) trackError(appsignal, error as Error, { method, path: pathname, url: request.url });
       console.error("Request error:", error);
       return new Response("Internal Server Error", { status: 500 });
     }

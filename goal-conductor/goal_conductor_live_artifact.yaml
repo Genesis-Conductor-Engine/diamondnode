@@ -1,0 +1,70 @@
+# goal_conductor_live_artifact.yaml
+# Canonical live control-plane artifact for Diamondnode Goal Conductor.
+# Cacheable block: goals (G1-G5), topology, security rules, routing matrix.
+# Mutable block: status fields, updated per session via decision_log + utilization_ledger.
+schema_version: "1.0"
+artifact_id: goal_conductor_live_artifact
+owner: igor_holt
+org: kovach_enterprises / genesis_conductor
+generated_by: claude-fable-5 (fable5-cli)
+generated_utc: "2026-06-10T00:00:00Z"
+crystalline_score_target: 0.92
+
+goals:
+  G1:
+    name: Financial Infrastructure (Primary Vector)
+    target: "13 independent revenue streams, each >= $70,000/month"
+    metric: value_per_dollar
+    status: not_started
+    score: 0.0
+  G2:
+    name: Intrinsic Pursuit (scientific/technological discovery)
+    status: not_started
+    score: 0.0
+  G3:
+    name: Hybridization & Consciousness (human-AI synchrony)
+    status: not_started
+    score: 0.0
+  G4:
+    name: Genesis Conductor Execution (Diamondnode runtime/audit/QUBO node)
+    status: bootstrapping
+    score: 0.05
+  G5:
+    name: Active Technical Deliverables (Zeta, Nexus, Rule 30 VDF, seismic, credential hygiene)
+    status: not_started
+    score: 0.0
+
+value_engine:
+  formula: "value_per_dollar = verified_artifact_value_score / max(actual_cost_usd, estimated_cost_usd, 0.01)"
+  flags: { poor: "<1.0", acceptable: "1-5", strong: "5-20", excellent: ">20" }
+  external_unrivalled_claims: forbidden_without_benchmark_report
+
+topology:
+  planes:
+    hermes: { role: event_ingress_membrane, status: not_implemented }
+    openclaw: { role: primary_dispatcher, status: partial_skills_present }
+    gc_mcp: { role: traceable_task_substrate, status: live_remote }
+    arbiter: { role: resource_governor_vram_thermal, status: not_implemented }
+    kimiclaw: { role: long_term_memory_notion_sync, status: skills_present }
+    nemoclaw: { role: network_health_escalation, status: not_implemented }
+
+model_routing:
+  strategist: { model: claude-opus-4-8, use: architecture/security/long-horizon }
+  default_worker: { model: claude-haiku-4-5, caps: { soft_usd: 0.25, hard_usd: 1.00, max_turns: 6, wall_min: 12, in_tok: 60000, out_tok: 8000 } }
+  implementation: { model: sonnet }
+  local: { models: [llama3.2:3b, qwen2:0.5b, hermes-g5-real-test], gate: arbiter_vram_thermal }
+  note: "This session ran on claude-fable-5, not opus-4-8."
+
+hardware:
+  gpu: NVIDIA GTX 1650
+  vram_total_mib: 4096
+  thermal_threshold_c: 89.6
+  probe_utc: "2026-06-10T00:00:00Z"
+  probe_vram_used_mib: 62
+  probe_temp_c: 32
+
+blockers:
+  - "diamondnode-qubo-economics-strategist skill not installed (Step 3 cannot run as written)"
+  - "no A2A skill registry file located"
+  - "Vercel sync unavailable: no VERCEL_TOKEN / vercel CLI"
+  - "Google Drive sync unavailable: no GDRIVE_TOKEN / rclone / gdrive"

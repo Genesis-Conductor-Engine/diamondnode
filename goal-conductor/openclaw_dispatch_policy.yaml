@@ -1,0 +1,32 @@
+# openclaw_dispatch_policy.yaml — routing table for the primary dispatcher.
+schema_version: "1.0"
+generated_utc: "2026-06-10T00:00:00Z"
+
+routing_table:
+  - { task_class: queue_triage,        route: haiku }
+  - { task_class: artifact_patch,      route: haiku }
+  - { task_class: telemetry_summary,   route: haiku }
+  - { task_class: log_reduction,       route: haiku }
+  - { task_class: small_review,        route: haiku }
+  - { task_class: handoff_generation,  route: haiku }
+  - { task_class: implementation,      route: sonnet }
+  - { task_class: tests,               route: sonnet }
+  - { task_class: mcp_webhook_glue,    route: sonnet }
+  - { task_class: architecture,        route: opus, policy_gate: true }
+  - { task_class: security,            route: opus, policy_gate: true }
+  - { task_class: long_horizon_plan,   route: opus, policy_gate: true }
+  - { task_class: telemetry_prefilter, route: local, gate: arbiter_vram_thermal }
+  - { task_class: cheap_classification,route: local, gate: arbiter_vram_thermal }
+
+gates:
+  arbiter:
+    require_before_dispatch: [vram_check, thermal_check, worktree_lock, budget_precheck]
+    vram_total_mib: 4096
+    thermal_threshold_c: 89.6
+  opus_policy_gate:
+    allow_when: ["architecture","security","production_risk","unresolved_disagreement","long_horizon_plan"]
+    forbidden_params: [non_default_temperature, non_default_top_p, non_default_top_k, extended_thinking_budget]
+
+worker_lifecycle:
+  prefer_existing_session: true
+  terminate_idle_after_minutes: 15

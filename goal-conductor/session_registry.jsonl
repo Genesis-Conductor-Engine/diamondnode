@@ -1,0 +1,5 @@
+{"ts_utc":"2026-06-10T00:00:00Z","pid":13481,"kind":"claude","status":"running","role":"unknown","note":"pre-existing claude process"}
+{"ts_utc":"2026-06-10T00:00:00Z","pid":23923,"kind":"claude","status":"running","role":"unknown","note":"pre-existing claude process"}
+{"ts_utc":"2026-06-10T00:00:00Z","pid":163695,"kind":"claude","status":"running","role":"this_session","note":"fable5-cli, /update -> qubo-first-prompt bootstrap"}
+{"ts_utc":"2026-06-10T00:00:00Z","pid":129313,"kind":"bun-telegram-plugin","status":"running","role":"telegram_channel","note":"claude-plugins-official telegram"}
+{"ts_utc":"2026-06-10T00:00:00Z","kind":"tmux","status":"none","note":"no tmux server running"}

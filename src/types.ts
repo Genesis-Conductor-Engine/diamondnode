@@ -9,6 +9,15 @@ export interface Env {
   NODE_VERSION: string;
   NODE_ID: string;
   KEY_ID: string;
+
+  // Notion proxy (optional; POST /notion/* routes return 503 until GATEWAY_AUTH_SECRET is set)
+  NOTION_TOKEN?: string;
+  NOTION_DATABASE_ID?: string;
+  GATEWAY_AUTH_SECRET?: string;
+  CUDA_Q_OPTIMIZED?: string;
+  GTX1650_MODE?: string;
+  QUADRATIC_EMBEDDING?: string;
+  QFLOP_THROUGHPUT?: string;
 }
 
 export interface AuditEvent {
@@ -49,7 +58,7 @@ export interface DiamondNodeManifest {
   radix_attention_claims?: RadixAttentionClaim[];
   latest_power_tower?: {
     decision: string;
-    energy: number;
+    energy: number | null;
     elapsed_ms: number;
     ts: string;
   };

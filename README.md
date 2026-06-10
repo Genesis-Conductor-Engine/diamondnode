@@ -14,18 +14,24 @@ Genesis Conductor audit-node — QUBO simulation engine + Cloudflare Worker iden
 
 ## Endpoints
 
-| Path | Description | Bot Protection |
-|---|---|---|
-| `GET /healthz` | `{ok, version, identity_pubkey, ts}` | Basic |
-| `GET /.well-known/diamond-node.json` | Identity manifest | None |
-| `GET /audit/replay?n=N` | Last N signed events (ring buffer) | Deep |
-| `GET /notion/health` | Notion proxy health check | Basic |
-| `POST /notion/offload` | Offload context to Notion | Deep |
-| `POST /notion/embed` | Embed text via Notion | Deep |
-| `POST /notion/query` | Query Notion database | Deep |
-| `POST /notion/search` | Search Notion pages | Deep |
+| Path | Description | Auth | Status |
+|---|---|---|---|
+| `GET /` | Landing page | None | Live |
+| `GET /dashboard` | Yennefer dashboard | None | Live |
+| `GET /healthz` | `{ok, version, identity_pubkey, ts}` | None | Live |
+| `GET /.well-known/diamond-node.json` | Identity manifest (+ latest power-tower, radix claims) | None | Live |
+| `GET /audit/replay?n=N` | Last N signed events (ring buffer) | None | Live |
+| `POST /uq/power_tower` | Deterministic power-tower arbitration (signed) | None | Live |
+| `POST /uq/radix_claims` | Sign RadixAttention claims | None (requires node priv key) | Live |
+| `GET /notion/health` | Notion proxy config check | None | Live |
+| `POST /notion/offload` | Offload context to Notion | Bearer `GATEWAY_AUTH_SECRET` | Live |
+| `POST /notion/embed` | Embed text via Notion | Bearer `GATEWAY_AUTH_SECRET` | Placeholder response |
+| `POST /notion/query` | Query Notion database | Bearer `GATEWAY_AUTH_SECRET` | Placeholder response |
+| `POST /notion/search` | Search Notion pages | Bearer `GATEWAY_AUTH_SECRET` | Placeholder response |
 
-**Bot Protection:** Powered by [BotID](https://vercel.com/docs/botid). Verified bots (Googlebot, etc.) allowed through. Unverified bots blocked with 403.
+All `POST /notion/*` routes return **503** until `GATEWAY_AUTH_SECRET` is provisioned and **401** on a bad bearer token. Placeholder routes self-identify in their response body and do not call the Notion API yet.
+
+**Bot Protection:** currently **disabled** — `checkAndBlockBot` is a no-op because the [BotID](https://vercel.com/docs/botid) package depends on Node.js APIs unavailable in Workers. A Workers-compatible replacement is tracked in `src/botid.ts` (TODO).
 
 ## Setup
 

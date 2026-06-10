@@ -5,6 +5,28 @@ import { initializeAppSignal, trackRequest, trackError } from "./appsignal.js";
 import { makeEvent, signEvent, signRadixClaim } from "./identity.js";
 import { appendAudit } from "./audit.js";
 import { arbitratePowerTower } from "./power-tower.js";
+import {
+  handleNotionHealth,
+  handleNotionOffload,
+  handleNotionEmbed,
+  handleNotionQuery,
+  handleNotionSearch,
+} from "./notion.js";
+import { handleSEORoutes } from "./seo-routes.js";
+import { LANDING_HTML } from "./landing-html.js";
+import { YENNEFER_DASHBOARD_HTML } from "./yennefer-dashboard.js";
+
+// Central bearer gate for mutating Notion proxy routes. Routes stay 503 until the
+// secret is provisioned — never silently open (no-public-endpoint-without-auth gate).
+function requireGatewayAuth(request: Request, env: Env): Response | null {
+  if (!env.GATEWAY_AUTH_SECRET) {
+    return Response.json({ error: "not_configured", detail: "GATEWAY_AUTH_SECRET unset" }, { status: 503 });
+  }
+  if (request.headers.get("Authorization") !== `Bearer ${env.GATEWAY_AUTH_SECRET}`) {
+    return Response.json({ error: "unauthorized" }, { status: 401 });
+  }
+  return null;
+}
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -85,8 +107,33 @@ export default {
           response = Response.json({ ok: true, signed: signedClaims.length });
         }
 
+      } else if (pathname === "/" && request.method === "GET") {
+        response = new Response(LANDING_HTML, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+
+      } else if (pathname === "/dashboard" && request.method === "GET") {
+        response = new Response(YENNEFER_DASHBOARD_HTML, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+
+      } else if (pathname === "/notion/health" && request.method === "GET") {
+        response = await handleNotionHealth(request, env);
+
+      } else if (pathname.startsWith("/notion/") && request.method === "POST") {
+        const denied = requireGatewayAuth(request, env);
+        if (denied) {
+          response = denied;
+        } else if (pathname === "/notion/offload") {
+          response = await handleNotionOffload(request, env);
+        } else if (pathname === "/notion/embed") {
+          response = await handleNotionEmbed(request, env);
+        } else if (pathname === "/notion/query") {
+          response = await handleNotionQuery(request, env);
+        } else if (pathname === "/notion/search") {
+          response = await handleNotionSearch(request, env);
+        } else {
+          response = new Response("Not Found", { status: 404 });
+        }
+
       } else {
-        response = new Response("Not Found", { status: 404 });
+        response = handleSEORoutes(pathname) ?? new Response("Not Found", { status: 404 });
       }
 
       if (appsignal) {

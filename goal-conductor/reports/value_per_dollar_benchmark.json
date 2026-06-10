@@ -1,0 +1,57 @@
+{
+  "ts_utc": "2026-06-10T11:03:15Z",
+  "agent": "vpd_benchmark",
+  "value_basis": "measured-internal-v0.1",
+  "signals": [
+    {
+      "signal": "tests_passed",
+      "command": "npm test",
+      "exit": 0,
+      "passed": 21,
+      "failed": 0,
+      "total": 21,
+      "score": 1.0
+    },
+    {
+      "signal": "typecheck",
+      "command": "npm run typecheck",
+      "exit": 0,
+      "score": 1.0
+    },
+    {
+      "signal": "deployability",
+      "command": "npm run deploy:dry",
+      "exit": 0,
+      "score": 1.0
+    },
+    {
+      "signal": "gpu_bench",
+      "command": "benchmark.py --suite gpu",
+      "exit": 0,
+      "score": 1.0,
+      "note": "scored by exit code; JSON parse found no results"
+    }
+  ],
+  "weights": {
+    "tests_passed": 0.35,
+    "typecheck": 0.2,
+    "deployability": 0.25,
+    "gpu_bench": 0.2
+  },
+  "value_scale": 10.0,
+  "verified_artifact_value_score": 10.0,
+  "cost_source": "operator",
+  "cost_usd": 4.5,
+  "ledger_actual_cost_usd": 0.0,
+  "records_with_cost": 0,
+  "records_without_cost": 2,
+  "value_per_dollar": 2.2222,
+  "flag": "acceptable",
+  "unmeasured_inputs": [
+    "revenue_vector_contribution",
+    "security_improvement",
+    "reusability",
+    "operator_time_saved",
+    "future_cost_reduction"
+  ]
+}

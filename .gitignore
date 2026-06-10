@@ -23,3 +23,4 @@ reports/health-*.json
 # Node modules
 node_modules/
 package-lock.json
+goal-conductor/.last_newsletter_run

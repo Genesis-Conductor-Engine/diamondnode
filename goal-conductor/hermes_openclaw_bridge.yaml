@@ -1,0 +1,46 @@
+# hermes_openclaw_bridge.yaml — minimal viable ingress->dispatch bridge (design, not yet deployed).
+schema_version: "1.0"
+status: design_only_not_deployed
+generated_utc: "2026-06-10T00:00:00Z"
+
+flow:
+  - stage: ingress
+    plane: hermes
+    accepts: [webhook, mcp, github, notion, monitoring, human]
+    auth: { methods: [hmac, mtls], replay_protection: nonce+timestamp_window, rate_limit: token_bucket }
+    on_accept:
+      - verify_signature
+      - replay_check
+      - rate_limit_check
+      - budget_precheck            # against budget_policy.yaml
+      - classify_goal_vector       # G1..G5
+      - classify_risk              # low|medium|high
+      - write_trace: gc_mcp        # soul capsule: trace start
+  - stage: dispatch
+    plane: openclaw
+    claims_from: hermes
+    routes_via: openclaw_dispatch_policy.yaml
+    arbiter_gate: [vram_check, thermal_check, worktree_lock, budget_precheck]
+    default_route: haiku
+    high_risk_route: [opus, human]
+  - stage: execute
+    plane: worker
+    template: haiku_worker_prompt.md
+    on_complete:
+      - append: utilization_ledger.jsonl
+      - write_trace: gc_mcp        # soul capsule: trace complete + artifact
+      - emit_handoff: next_queue_item
+
+contracts:
+  webhook_request:
+    headers: { x_signature: hmac_sha256, x_timestamp: rfc3339, x_nonce: uuid }
+    body: { event_type: string, payload: object, source: string }
+  gc_mcp_trace:
+    fields: [trace_id, task_id, goal_vectors, model, cost_usd, artifact_ref, decision_ref, status]
+
+security_gates:
+  - no_public_endpoint_until: [auth_verified, replay_verified, rate_limit_verified, audit_verified]
+  - no_deploy_without: [dry_run, logged_decision]
+  - no_secrets_in_traces: true
+
+implementation_status_estimate: "~5% (design artifacts only; no running Hermes/openclaw service)"

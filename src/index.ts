@@ -4,6 +4,29 @@ import { handleAuditReplay } from "./audit.js";
 import { initializeAppSignal, trackRequest, trackError } from "./appsignal.js";
 import { makeEvent, signEvent, signRadixClaim } from "./identity.js";
 import { appendAudit } from "./audit.js";
+import { arbitratePowerTower } from "./power-tower.js";
+import {
+  handleNotionHealth,
+  handleNotionOffload,
+  handleNotionEmbed,
+  handleNotionQuery,
+  handleNotionSearch,
+} from "./notion.js";
+import { handleSEORoutes } from "./seo-routes.js";
+import { LANDING_HTML } from "./landing-html.js";
+import { YENNEFER_DASHBOARD_HTML } from "./yennefer-dashboard.js";
+
+// Central bearer gate for mutating Notion proxy routes. Routes stay 503 until the
+// secret is provisioned — never silently open (no-public-endpoint-without-auth gate).
+function requireGatewayAuth(request: Request, env: Env): Response | null {
+  if (!env.GATEWAY_AUTH_SECRET) {
+    return Response.json({ error: "not_configured", detail: "GATEWAY_AUTH_SECRET unset" }, { status: 503 });
+  }
+  if (request.headers.get("Authorization") !== `Bearer ${env.GATEWAY_AUTH_SECRET}`) {
+    return Response.json({ error: "unauthorized" }, { status: 401 });
+  }
+  return null;
+}
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
@@ -44,20 +67,15 @@ export default {
         };
         response = Response.json(manifest);
 
-      // v0.3: Live power-tower arbitration (<8ms via mycelial CUDA-Q)
+      // v0.3.1: Deterministic power-tower arbitration (ported from unified_inference/optimizer.py).
+      // Caller telemetry is captured under inputs/telemetry_used, never spread into the
+      // signed decision — the attestation covers only node-computed values.
       } else if (pathname === "/uq/power_tower" && request.method === "POST") {
-        const body = await request.json() as any;
-        const decision = {
-          decision: body.guardian_r > 0.4 ? "veto" : "promote",
-          energy: -0.87 + (body.revenue_impact || 0) * 0.3,
-          elapsed_ms: 3.8 + Math.random() * 1.2,
-          within_target: true,
-          reason: body.guardian_r > 0.4 ? "maru_guardian" : "power_tower_qubo",
-          ...body,
-        };
+        const body = await request.json();
+        const decision = arbitratePowerTower(body);
         latestPowerTower = { decision: decision.decision, energy: decision.energy, elapsed_ms: decision.elapsed_ms, ts: new Date().toISOString() };
 
-        const event = makeEvent("UQ_POWER_TOWER", decision, env);
+        const event = makeEvent("UQ_POWER_TOWER", { ...decision }, env);
         const signed = env.DIAMOND_NODE_ED25519_PRIV
           ? await signEvent(event, env.DIAMOND_NODE_ED25519_PRIV)
           : { ...event, sig: "unsigned-dev" };
@@ -89,8 +107,33 @@ export default {
           response = Response.json({ ok: true, signed: signedClaims.length });
         }
 
+      } else if (pathname === "/" && request.method === "GET") {
+        response = new Response(LANDING_HTML, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+
+      } else if (pathname === "/dashboard" && request.method === "GET") {
+        response = new Response(YENNEFER_DASHBOARD_HTML, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+
+      } else if (pathname === "/notion/health" && request.method === "GET") {
+        response = await handleNotionHealth(request, env);
+
+      } else if (pathname.startsWith("/notion/") && request.method === "POST") {
+        const denied = requireGatewayAuth(request, env);
+        if (denied) {
+          response = denied;
+        } else if (pathname === "/notion/offload") {
+          response = await handleNotionOffload(request, env);
+        } else if (pathname === "/notion/embed") {
+          response = await handleNotionEmbed(request, env);
+        } else if (pathname === "/notion/query") {
+          response = await handleNotionQuery(request, env);
+        } else if (pathname === "/notion/search") {
+          response = await handleNotionSearch(request, env);
+        } else {
+          response = new Response("Not Found", { status: 404 });
+        }
+
       } else {
-        response = new Response("Not Found", { status: 404 });
+        response = handleSEORoutes(pathname) ?? new Response("Not Found", { status: 404 });
       }
 
       if (appsignal) {

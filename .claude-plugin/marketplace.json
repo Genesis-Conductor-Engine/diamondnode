@@ -45,6 +45,16 @@
       "keywords": ["diamondnode GTX 1650", "CUDA-Q QAOA QUBO", "mycelial optimizer", "signed audit events", "GC 7-Agent Topology", "claw-handoff automation"]
     },
     {
+      "name": "diamondnode-qubo-economics-strategist",
+      "source": "https://github.com/Genesis-Conductor-Engine/diamondnode",
+      "description": "QUBO/knapsack skill-portfolio selector for value-per-dollar (VPD) optimization. Discovers installed agent skills, scores declared-heuristic value vs. cost from skill_value_manifest.yaml, solves exact (N<=20) or simulated-annealing (numpy) under a USD budget with mandatory-skill constraints, and emits honest evt- records (value_basis=heuristic until externally benchmarked) into goal-conductor/utilization_ledger.jsonl. Step 3 engine of the Diamondnode goal-conductor control plane.",
+      "version": "1.0.0",
+      "tags": ["qubo", "economics", "vpd", "skill-portfolio", "goal-conductor", "genesis-conductor"],
+      "category": "optimization",
+      "homepage": "https://github.com/Genesis-Conductor-Engine/diamondnode/tree/main/skills/diamondnode-qubo-economics-strategist",
+      "keywords": ["value per dollar", "skill portfolio QUBO", "budget-constrained selection", "goal conductor step 3"]
+    },
+    {
       "name": "diamondnode-mcp-integration",
       "source": "https://github.com/Genesis-Conductor-Engine/diamondnode/blob/main/mcp-config.json",
       "description": "MCP server configuration and verification fleet tools (mcp-config.json + mcp-verify-fleet.sh) exposing diamondnode capabilities (audit, Notion proxy, health, identity) to autonomous agents. Designed for bridging via mcp-openclaw-bridge into the professional OpenClaw / ClawHub stack alongside grok-persistent-state and smithery-mcp-orchestrator.",

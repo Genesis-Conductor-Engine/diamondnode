@@ -1,0 +1,58 @@
+# skill_value_manifest.yaml
+# DECLARED HEURISTIC value scores (NOT benchmarks). Tune freely.
+# Fields per skill: value (relative utility), cost_usd (est. per-use), goal_vectors, mandatory.
+# Unlisted skills default to value=1.0, cost_usd=0.10, mandatory=false and are flagged "unscored".
+
+diamondnode-qubo-economics-strategist:
+  value: 4.0
+  cost_usd: 0.05
+  goal_vectors: [G1, G4]
+  mandatory: true
+
+notion-cli:
+  value: 3.0
+  cost_usd: 0.05
+  goal_vectors: [G4, G5]
+  mandatory: false
+
+claude-api:
+  value: 3.5
+  cost_usd: 0.08
+  goal_vectors: [G1, G4]
+  mandatory: false
+
+build-mcp-server:
+  value: 3.2
+  cost_usd: 0.15
+  goal_vectors: [G1, G4]
+  mandatory: false
+
+build-mcp-app:
+  value: 2.6
+  cost_usd: 0.15
+  goal_vectors: [G1]
+  mandatory: false
+
+workflow-skill-creator:
+  value: 2.4
+  cost_usd: 0.10
+  goal_vectors: [G3, G4]
+  mandatory: false
+
+hardhat:
+  value: 2.8
+  cost_usd: 0.12
+  goal_vectors: [G1, G5]
+  mandatory: false
+
+find-skills:
+  value: 1.5
+  cost_usd: 0.02
+  goal_vectors: [G4]
+  mandatory: false
+
+uv:
+  value: 1.2
+  cost_usd: 0.02
+  goal_vectors: [G4]
+  mandatory: false

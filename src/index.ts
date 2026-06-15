@@ -5,10 +5,13 @@ import { initializeAppSignal, trackRequest, trackError } from "./appsignal.js";
 import { makeEvent, signEvent, signRadixClaim } from "./identity.js";
 import { appendAudit } from "./audit.js";
 import { handleSystemStatus } from "./cortex.js";
+import { handleSEORoutes } from "./seo-routes.js";
+import { YENNEFER_DASHBOARD_HTML } from "./yennefer-dashboard.js";
+import { NodeStateDO } from "./NodeStateDO.js";
 
 const WELL_KNOWN_TEMPLATE = {
   node_id: "diamond-node",
-  deploy_url: "https://dn.genesisconductor.io",
+  deploy_url: "https://yennefer.quest",
   repo: "https://github.com/Genesis-Conductor-Engine/diamond-node",
 };
 
@@ -16,10 +19,13 @@ const WELL_KNOWN_TEMPLATE = {
 let latestRadixClaims: RadixAttentionClaim[] = [];
 let latestPowerTower: any = null;
 
+export { NodeStateDO };
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const startTime = Date.now();
-    const { pathname, method } = new URL(request.url);
+    const url = new URL(request.url);
+    const pathname = url.pathname;
+    const method = request.method;
 
     const appsignal = env.APPSIGNAL_KEY
       ? initializeAppSignal(env.APPSIGNAL_KEY, env.NODE_VERSION)
@@ -38,83 +44,104 @@ export default {
     }
 
     try {
-      let response: Response;
+      let response: Response | null = null;
 
-      if (pathname === "/healthz" || pathname === "/health") {
-        response = await handleHealth(request, env, ctx);
-
-      } else if (pathname === "/api/system-status" && method === "GET") {
-        // Live cortex feed aggregation — powers Yennefer Cortex dashboard
-        response = await handleSystemStatus(request, env, ctx);
-
-      } else if (pathname === "/audit/replay") {
-        response = await handleAuditReplay(request);
-
-      } else if (pathname === "/.well-known/diamond-node.json") {
-        const manifest: DiamondNodeManifest = {
-          ...WELL_KNOWN_TEMPLATE,
-          key_id: env.KEY_ID ?? "dn-2026-05",
-          identity_pubkey: env.DIAMOND_NODE_ED25519_PUB ?? "",
-          version: env.NODE_VERSION ?? "0.3.0-iqg",
-          ts: new Date().toISOString(),
-          monitoring: env.APPSIGNAL_KEY ? "enabled" : "disabled",
-          radix_attention_claims: latestRadixClaims.length > 0 ? latestRadixClaims : undefined,
-          latest_power_tower: latestPowerTower ?? undefined,
-        };
-        response = Response.json(manifest);
-
-      // v0.3: Live power-tower arbitration (<8ms via mycelial CUDA-Q)
-      } else if (pathname === "/uq/power_tower" && method === "POST") {
-        const body = await request.json() as any;
-        const decision = {
-          decision: body.guardian_r > 0.4 ? "veto" : "promote",
-          energy: -0.87 + (body.revenue_impact || 0) * 0.3,
-          elapsed_ms: 3.8 + Math.random() * 1.2,
-          within_target: true,
-          reason: body.guardian_r > 0.4 ? "maru_guardian" : "power_tower_qubo",
-          ...body,
-        };
-        latestPowerTower = {
-          decision: decision.decision,
-          energy: decision.energy,
-          elapsed_ms: decision.elapsed_ms,
-          ts: new Date().toISOString(),
-        };
-
-        const event = makeEvent("UQ_POWER_TOWER", decision, env);
-        const signed = env.DIAMOND_NODE_ED25519_PRIV
-          ? await signEvent(event, env.DIAMOND_NODE_ED25519_PRIV)
-          : { ...event, sig: "unsigned-dev" };
-        appendAudit(signed as any);
-
-        response = Response.json({ ok: true, result: decision, attest: signed });
-
-      // v0.3: Accept + sign RadixAttention claims from gc-dynamic-uq-service
-      } else if (pathname === "/uq/radix_claims" && method === "POST") {
-        const body = await request.json() as { claims: any[]; uq_version: number; uq_value: number };
-        if (!env.DIAMOND_NODE_ED25519_PRIV) {
-          response = Response.json({ error: "no_priv_key" }, { status: 500 });
-        } else {
-          const signedClaims: RadixAttentionClaim[] = [];
-          for (const c of (body.claims || [])) {
-            const claim = await signRadixClaim({
-              prefix_id: c.prefix_id,
-              root_hash: c.root_hash,
-              uq_version: body.uq_version,
-              uq_value: body.uq_value,
-              ts: new Date().toISOString(),
-            }, env.DIAMOND_NODE_ED25519_PRIV);
-            signedClaims.push(claim);
-          }
-          latestRadixClaims = signedClaims;
-          const event = makeEvent("RADIX_CLAIMS_SIGNED", { count: signedClaims.length, uq_version: body.uq_version }, env);
-          const signedEvent = await signEvent(event, env.DIAMOND_NODE_ED25519_PRIV);
-          appendAudit(signedEvent as any);
-          response = Response.json({ ok: true, signed: signedClaims.length });
-        }
-
+      // Root and dashboard
+      if (pathname === "/" || pathname === "/dashboard") {
+        response = new Response(YENNEFER_DASHBOARD_HTML, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "no-cache",
+          },
+        });
       } else {
-        response = new Response("Not Found", { status: 404 });
+        // SEO routes
+        const seoResponse = handleSEORoutes(pathname);
+        if (seoResponse) {
+          response = seoResponse;
+        } else if (pathname === "/healthz" || pathname === "/health") {
+          response = await handleHealth(request, env, ctx);
+        } else if (pathname === "/api/system-status" && method === "GET") {
+          // Live cortex feed aggregation — powers Yennefer Cortex dashboard
+          response = await handleSystemStatus(request, env, ctx);
+        } else if (pathname === "/audit/replay") {
+          response = await handleAuditReplay(request);
+        } else if (pathname === "/.well-known/diamond-node.json") {
+          const manifest: DiamondNodeManifest = {
+            ...WELL_KNOWN_TEMPLATE,
+            key_id: env.KEY_ID ?? "dn-2026-05",
+            identity_pubkey: env.DIAMOND_NODE_ED25519_PUB ?? "",
+            version: env.NODE_VERSION ?? "0.3.0-iqg",
+            ts: new Date().toISOString(),
+            monitoring: env.APPSIGNAL_KEY ? "enabled" : "disabled",
+            radix_attention_claims: latestRadixClaims.length > 0 ? latestRadixClaims : undefined,
+            latest_power_tower: latestPowerTower ?? undefined,
+          };
+          response = Response.json(manifest, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, OPTIONS",
+              "Cache-Control": "no-cache",
+            },
+          });
+        } else if (pathname === "/uq/power_tower" && method === "POST") {
+          // v0.3: Live power-tower arbitration (<8ms via mycelial CUDA-Q)
+          const body = await request.json() as any;
+          const decision = {
+            decision: body.guardian_r > 0.4 ? "veto" : "promote",
+            energy: -0.87 + (body.revenue_impact || 0) * 0.3,
+            elapsed_ms: 3.8 + Math.random() * 1.2,
+            within_target: true,
+            reason: body.guardian_r > 0.4 ? "maru_guardian" : "power_tower_qubo",
+            ...body,
+          };
+          latestPowerTower = {
+            decision: decision.decision,
+            energy: decision.energy,
+            elapsed_ms: decision.elapsed_ms,
+            ts: new Date().toISOString(),
+          };
+
+          const event = makeEvent("UQ_POWER_TOWER", decision, env);
+          const signed = env.DIAMOND_NODE_ED25519_PRIV
+            ? await signEvent(event, env.DIAMOND_NODE_ED25519_PRIV)
+            : { ...event, sig: "unsigned-dev" };
+          appendAudit(signed as any);
+
+          response = Response.json({ ok: true, result: decision, attest: signed }, {
+            headers: { "Access-Control-Allow-Origin": "*" },
+          });
+        } else if (pathname === "/uq/radix_claims" && method === "POST") {
+          // v0.3: Accept + sign RadixAttention claims from gc-dynamic-uq-service
+          const body = await request.json() as { claims: any[]; uq_version: number; uq_value: number };
+          if (!env.DIAMOND_NODE_ED25519_PRIV) {
+            response = Response.json({ error: "no_priv_key" }, { status: 500, headers: { "Access-Control-Allow-Origin": "*" } });
+          } else {
+            const signedClaims: RadixAttentionClaim[] = [];
+            for (const c of (body.claims || [])) {
+              const claim = await signRadixClaim({
+                prefix_id: c.prefix_id,
+                root_hash: c.root_hash,
+                uq_version: body.uq_version,
+                uq_value: body.uq_value,
+                ts: new Date().toISOString(),
+              }, env.DIAMOND_NODE_ED25519_PRIV);
+              signedClaims.push(claim);
+            }
+            latestRadixClaims = signedClaims;
+            const event = makeEvent("RADIX_CLAIMS_SIGNED", { count: signedClaims.length, uq_version: body.uq_version }, env);
+            const signedEvent = await signEvent(event, env.DIAMOND_NODE_ED25519_PRIV);
+            appendAudit(signedEvent as any);
+            response = Response.json({ ok: true, signed: signedClaims.length }, {
+              headers: { "Access-Control-Allow-Origin": "*" },
+            });
+          }
+        }
+      }
+
+      if (!response) {
+        response = new Response("Not Found", { status: 404, headers: { "Access-Control-Allow-Origin": "*" } });
       }
 
       if (appsignal) {

@@ -3,6 +3,13 @@ main = "src/index.ts"
 compatibility_date = "2024-05-24"
 compatibility_flags = ["nodejs_compat"]
 
+[durable_objects]
+bindings = [ { name = "NodeStateDO", class_name = "NodeStateDO" } ]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["NodeStateDO"]
+
 [vars]
 NODE_VERSION = "0.1.0"
 NODE_ID = "diamond-node"
@@ -13,6 +20,14 @@ CORTEX_FEED_URL = "https://raw.githubusercontent.com/Genesis-Conductor-Engine/co
 [[routes]]
 pattern = "dn.genesisconductor.io/*"
 zone_name = "genesisconductor.io"
+
+[[routes]]
+pattern = "yennefer.quest/*"
+zone_name = "yennefer.quest"
+
+[[routes]]
+pattern = "www.yennefer.quest/*"
+zone_name = "yennefer.quest"
 
 # Secrets — bind via wrangler CLI before deploying:
 #   wrangler secret put DIAMOND_NODE_ED25519_PRIV   # base64 PKCS#8

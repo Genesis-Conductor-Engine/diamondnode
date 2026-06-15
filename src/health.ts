@@ -31,5 +31,11 @@ export async function handleHealth(
     }
   }
 
-  return Response.json(body);
+  return Response.json(body, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Cache-Control": "no-cache",
+    },
+  });
 }

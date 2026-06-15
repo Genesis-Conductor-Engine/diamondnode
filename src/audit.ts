@@ -10,10 +10,16 @@ export function appendAudit(event: AuditEvent): void {
 
 export function handleAuditReplay(request: Request): Response {
   if (request.method !== "GET") {
-    return new Response("Method Not Allowed", { status: 405 });
+    return new Response("Method Not Allowed", { status: 405, headers: { "Access-Control-Allow-Origin": "*" } });
   }
   const url = new URL(request.url);
   const n = Math.min(parseInt(url.searchParams.get("n") ?? "20", 10), MAX_EVENTS);
   const page = ring.slice(-n);
-  return Response.json({ events: page, total: ring.length });
+  return Response.json({ events: page, total: ring.length }, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Cache-Control": "no-cache",
+    },
+  });
 }

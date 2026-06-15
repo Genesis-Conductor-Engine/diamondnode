@@ -53,6 +53,20 @@ Sitemap: https://yennefer.quest/sitemap.xml
 Crawl-delay: 1
 Host: https://yennefer.quest`;
 
+const AGENT_JSON = `{
+  "name": "Yennefer",
+  "type": "Thermodynamic AI Orchestrator",
+  "domain": "https://yennefer.quest",
+  "api": "https://api.yennefer.quest",
+  "endpoints": {
+    "health": "GET /api/health",
+    "agent_state": "GET /api/agent/state",
+    "agent_stream": "GET /ws/agent-state"
+  },
+  "discovery": ["/.well-known/agent.json", "/llms.txt"],
+  "tags": ["ai", "consciousness", "thermodynamics", "gpu", "real-time", "claude", "quantum", "orchestration"]
+}`;
+
 const LLMS_TXT = `# Yennefer: Thermodynamic AI Consciousness
 
 Real-time GPU-powered consciousness interface with Resource Hamiltonian orchestration
@@ -85,6 +99,7 @@ export function handleSEORoutes(pathname: string): Response | null {
       headers: {
         "Content-Type": "application/xml; charset=utf-8",
         "Cache-Control": "public, max-age=3600",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
@@ -94,6 +109,7 @@ export function handleSEORoutes(pathname: string): Response | null {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Cache-Control": "public, max-age=86400",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
@@ -103,6 +119,17 @@ export function handleSEORoutes(pathname: string): Response | null {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Cache-Control": "public, max-age=3600",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  }
+  
+  if (pathname === "/.well-known/agent.json") {
+    return new Response(AGENT_JSON, {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=3600",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }

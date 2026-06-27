@@ -38,6 +38,23 @@
       "health": "https://gc-mcp.iholt.workers.dev/health",
       "verified": true,
       "notes": "Development/fallback endpoint, fully functional"
+    },
+    {
+      "name": "payments-mcp",
+      "transport": "stdio",
+      "status": "installed",
+      "command": "node",
+      "args": ["/home/diamondnode/.payments-mcp/bundle.js"],
+      "verified": false,
+      "notes": "Coinbase Agentic Wallet + x402 payments MCP (v1.0.5 installed). Electron-based; fails headless (no DISPLAY/libasound). Configure Coinbase creds for embedded/agentic wallets on Base. Complements direct EOA flows."
+    },
+    {
+      "name": "coinbase-cdp-docs",
+      "url": "https://docs.cdp.coinbase.com/mcp",
+      "transport": "streamable-http",
+      "status": "available",
+      "verified": false,
+      "notes": "Official Coinbase Developer Platform Documentation MCP (read-only). Server: 'Coinbase Developer Documentation' v1.0.0. Provides search/retrieval over public docs (search tools + resources). Initialize succeeds with tools+resources capabilities. Use for AgentKit, cdp-sdk, Trade API, onchain actions, Base/EVM guidance. Complements (does not replace) diamondnode-qflop-base-wallet-mcp + direct ethers in Yennefer/aerodrome-lp/qflop-backfill for our 25 funded real EOA wallets (BACKFILL_MASTER_MNEMONIC) + owner PRIVATE_KEY doing real Aerodrome volatile LP adds/swaps on Base 8453 (QFLOP_SIM_MODE=0). For live CDP-managed wallet control: set CDP_API_KEY_NAME + CDP_API_KEY_PRIVATE_KEY then use @coinbase/agentkit + cdp-sdk (getMcpTools) or payments-mcp with keys. No keys present; no auto-install performed."
     }
   ],
   "protocol": {

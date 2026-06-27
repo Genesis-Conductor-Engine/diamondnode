@@ -6,6 +6,7 @@ import { makeEvent, signEvent, signRadixClaim } from "./identity.js";
 import { appendAudit } from "./audit.js";
 import { handleSystemStatus } from "./cortex.js";
 import { handleSEORoutes } from "./seo-routes.js";
+import { handleYenneferProxy } from "./yennefer-proxy.js";
 import { YENNEFER_DASHBOARD_HTML } from "./yennefer-dashboard.js";
 import { NodeStateDO } from "./NodeStateDO.js";
 
@@ -62,9 +63,13 @@ export default {
           response = seoResponse;
         } else if (pathname === "/healthz" || pathname === "/health") {
           response = await handleHealth(request, env, ctx);
+        } else if (pathname === "/api/health" && method === "GET") {
+          response = await handleHealth(request, env, ctx);
         } else if (pathname === "/api/system-status" && method === "GET") {
           // Live cortex feed aggregation — powers Yennefer Cortex dashboard
           response = await handleSystemStatus(request, env, ctx);
+        } else if (pathname.startsWith("/api/yennefer/")) {
+          response = await handleYenneferProxy(request, env);
         } else if (pathname === "/audit/replay") {
           response = await handleAuditReplay(request);
         } else if (pathname === "/.well-known/diamond-node.json") {
@@ -137,6 +142,17 @@ export default {
               headers: { "Access-Control-Allow-Origin": "*" },
             });
           }
+        } else if (pathname.startsWith("/api/rpsi/")) {
+          // Route RPSI EVT ingestion and feed queries to NodeStateDO
+          const doId = env.NodeStateDO.idFromName("rpsi-pipeline");
+          const stub = env.NodeStateDO.get(doId);
+          const doUrl = new URL(request.url);
+          doUrl.pathname = pathname.replace("/api/rpsi", "");
+          response = await stub.fetch(new Request(doUrl.toString(), {
+            method: request.method,
+            headers: request.headers,
+            body: request.method !== "GET" && request.method !== "HEAD" ? request.body : undefined,
+          }));
         }
       }
 

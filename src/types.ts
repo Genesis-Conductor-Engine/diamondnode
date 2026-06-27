@@ -4,6 +4,8 @@ export interface Env {
   DIAMOND_NODE_ED25519_PUB: string;  // base64-encoded SPKI public key
   DIAMOND_VAULT_AUDIT_URL: string;   // upstream audit endpoint (optional)
   APPSIGNAL_KEY?: string;            // AppSignal API key (optional, for monitoring)
+  YENNEFER_API_URL?: string;          // Yennefer orchestrator API/tunnel origin
+  NodeStateDO: DurableObjectNamespace;  // RPSI EVT storage
 
   // Vars — set in wrangler.toml [vars]
   NODE_VERSION: string;

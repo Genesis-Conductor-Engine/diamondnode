@@ -21,14 +21,6 @@ CORTEX_FEED_URL = "https://raw.githubusercontent.com/Genesis-Conductor-Engine/co
 pattern = "dn.genesisconductor.io/*"
 zone_name = "genesisconductor.io"
 
-[[routes]]
-pattern = "yennefer.quest/*"
-zone_name = "yennefer.quest"
-
-[[routes]]
-pattern = "www.yennefer.quest/*"
-zone_name = "yennefer.quest"
-
 # Secrets — bind via wrangler CLI before deploying:
 #   wrangler secret put DIAMOND_NODE_ED25519_PRIV   # base64 PKCS#8
 #   wrangler secret put DIAMOND_NODE_ED25519_PUB    # base64 SPKI

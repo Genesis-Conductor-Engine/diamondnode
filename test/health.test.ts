@@ -26,6 +26,7 @@ const mockEnv: Env = {
   NODE_VERSION: "0.1.0",
   NODE_ID: "diamond-node",
   KEY_ID: "dn-2026-05",
+  NodeStateDO: {} as DurableObjectNamespace,
 };
 
 const mockCtx = { waitUntil: (_p: Promise<unknown>) => {} } as ExecutionContext;
@@ -83,6 +84,37 @@ describe("GET /api/system-status", () => {
     const req = new Request("https://dn.genesisconductor.io/api/system-status");
     const res = await worker.fetch(req, mockEnv, mockCtx);
     expect(res.headers.get("access-control-allow-origin")).toBe("*");
+  });
+});
+
+describe("Yennefer dashboard proxy", () => {
+  it("proxies metrics to the configured Yennefer API", async () => {
+    const fetchMock = vi.fn((url: string) => {
+      expect(url).toBe("https://api.yennefer.quest/api/vram");
+      return Promise.resolve(Response.json({ hamiltonian: 1.08, state: "OPTIMAL" }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const req = new Request("https://yennefer.quest/api/yennefer/metrics");
+    const res = await worker.fetch(
+      req,
+      { ...mockEnv, YENNEFER_API_URL: "https://api.yennefer.quest/" },
+      mockCtx,
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("access-control-allow-origin")).toBe("*");
+    expect(await res.json()).toEqual({ hamiltonian: 1.08, state: "OPTIMAL" });
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("returns 503 when YENNEFER_API_URL is not configured", async () => {
+    const req = new Request("https://yennefer.quest/api/yennefer/metrics");
+    const res = await worker.fetch(req, mockEnv, mockCtx);
+
+    expect(res.status).toBe(503);
+    const body = await res.json() as Record<string, unknown>;
+    expect(body.error).toBe("YENNEFER_API_URL is not configured");
   });
 });
 
